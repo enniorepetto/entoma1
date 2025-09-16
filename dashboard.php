@@ -39,17 +39,20 @@
         }
 
         .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(45deg, #e91e63, #9c27b0);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-            font-size: 24px;
-            color: white;
-            font-weight: bold;
+        width: 90px;
+        height: 90px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        overflow: hidden;
+        }
+
+        .logo-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+
         }
 
         .logo h1 {
@@ -657,8 +660,10 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <div class="logo-icon">E</div>
-                <h1>entoma</h1>
+            <div class="logo-icon">
+            <img src="logo.png" alt="Entoma Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+</div>
+                <h1>Entoma</h1>
                 <p>Tu estilo, tu comunidad</p>
             </div>
             
@@ -1274,14 +1279,12 @@
                 }
             });
         });
-
         // Cerrar modal al hacer click fuera
         document.getElementById('loginOverlay').addEventListener('click', function(e) {
-            if (e.target === this && isLoggedIn) {
-                closeLogin();
+             if (e.target === this) {
+        closeLogin();
             }
         });
-
         // Exponer funciones necesarias globalmente
         window.showLogin = showLogin;
         window.closeLogin = closeLogin;
