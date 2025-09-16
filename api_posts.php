@@ -2,17 +2,13 @@
 session_start();
 include("conexion.php");
 
-// Verificar si el usuario está logueado
-if (!isset($_SESSION['usuario_id'])) {
-    http_response_code(401);
-    echo json_encode(['error' => 'No autorizado']);
-    exit();
-}
-
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 
 $action = $_GET['action'] ?? '';
-$usuario_id = $_SESSION['usuario_id'];
+$usuario_id = $_SESSION['usuario_id'] ?? null;
 
 switch($action) {
     case 'feed':
@@ -74,16 +70,28 @@ function getFeedPosts($conexion) {
 }
 
 function getExplorePosts($conexion) {
-    // Para explorar, mostrar datos de ejemplo
-    echo json_encode(getSamplePosts());
+    // Para explorar, mostrar datos de ejemplo mezclados
+    $samplePosts = getSamplePosts();
+    // Mezclar array
+    shuffle($samplePosts);
+    echo json_encode($samplePosts);
 }
 
 function getTrendingPosts($conexion) {
-    // Para trending, mostrar datos de ejemplo
-    echo json_encode(getSamplePosts());
+    // Para trending, mostrar datos de ejemplo ordenados por likes
+    $samplePosts = getSamplePosts();
+    usort($samplePosts, function($a, $b) {
+        return $b['likes'] - $a['likes'];
+    });
+    echo json_encode($samplePosts);
 }
 
 function getUserPosts($conexion, $user_id) {
+    if (!$user_id) {
+        echo json_encode([]);
+        return;
+    }
+    
     $sql = "SELECT p.*, u.nombre, u.apellido, u.foto as user_foto 
             FROM publicaciones p 
             JOIN usuario u ON p.id_usuario = u.id_usuario 
@@ -105,10 +113,6 @@ function getUserPosts($conexion, $user_id) {
         $posts[] = formatPost($row);
     }
     
-    if (empty($posts)) {
-        $posts = []; // Array vacío si no hay posts del usuario
-    }
-    
     echo json_encode($posts);
     $stmt->close();
 }
@@ -127,7 +131,7 @@ function formatPost($row) {
         'description' => $row['descripcion'] ?? '',
         'image' => 'uploads/publicaciones/' . ($row['foto'] ?? 'placeholder.jpg'),
         'user' => '@' . $username,
-        'user_name' => $row['nombre'] . ' ' . $row['apellido'],
+        'user_name' => $row['nombre'] . ' ' . ($row['apellido'] ?? ''),
         'user_avatar' => strtoupper(substr($row['nombre'], 0, 1)),
         'tags' => $row['etiquetas'] ? explode(',', $row['etiquetas']) : [],
         'location' => $row['ubicacion'] ?? '',
@@ -143,7 +147,7 @@ function getSamplePosts() {
             'id' => 1,
             'title' => 'Street Style Casual',
             'description' => 'Look perfecto para un día casual en la ciudad',
-            'image' => 'https://via.placeholder.com/300x400/FF6B6B/FFFFFF?text=Street+Style',
+            'image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=400&fit=crop',
             'user' => '@maria_style',
             'user_name' => 'Maria Style',
             'user_avatar' => 'M',
@@ -157,7 +161,7 @@ function getSamplePosts() {
             'id' => 2,
             'title' => 'Elegante para la oficina',
             'description' => 'Combinación perfecta para una reunión importante',
-            'image' => 'https://via.placeholder.com/300x500/4ECDC4/FFFFFF?text=Elegant+Look',
+            'image' => 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=300&h=500&fit=crop',
             'user' => '@fashionlover',
             'user_name' => 'Fashion Lover',
             'user_avatar' => 'F',
@@ -171,7 +175,7 @@ function getSamplePosts() {
             'id' => 3,
             'title' => 'Look casual viernes',
             'description' => 'Cómodo pero con estilo para el fin de semana',
-            'image' => 'https://via.placeholder.com/300x450/45B7D1/FFFFFF?text=Casual+Friday',
+            'image' => 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=450&fit=crop',
             'user' => '@style_guru',
             'user_name' => 'Style Guru',
             'user_avatar' => 'S',
@@ -185,7 +189,7 @@ function getSamplePosts() {
             'id' => 4,
             'title' => 'Outfit de noche',
             'description' => 'Perfecto para una salida nocturna',
-            'image' => 'https://via.placeholder.com/300x400/96CEB4/FFFFFF?text=Night+Out',
+            'image' => 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=300&h=400&fit=crop',
             'user' => '@nightowl',
             'user_name' => 'Night Owl',
             'user_avatar' => 'N',
@@ -194,6 +198,34 @@ function getSamplePosts() {
             'likes' => 203,
             'comments' => 15,
             'created_at' => date('Y-m-d H:i:s', strtotime('-3 hours'))
+        ],
+        [
+            'id' => 5,
+            'title' => 'Estilo Minimalista',
+            'description' => 'Menos es más en este look clean',
+            'image' => 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=300&h=380&fit=crop',
+            'user' => '@minimal_chic',
+            'user_name' => 'Minimal Chic',
+            'user_avatar' => 'C',
+            'tags' => ['minimalista', 'clean', 'moderno'],
+            'location' => 'Villa Crespo',
+            'likes' => 67,
+            'comments' => 5,
+            'created_at' => date('Y-m-d H:i:s', strtotime('-8 hours'))
+        ],
+        [
+            'id' => 6,
+            'title' => 'Vintage Vibes',
+            'description' => 'Inspirado en los 90s pero con twist moderno',
+            'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=300&h=420&fit=crop',
+            'user' => '@retro_queen',
+            'user_name' => 'Retro Queen',
+            'user_avatar' => 'R',
+            'tags' => ['vintage', '90s', 'retro'],
+            'location' => 'San Telmo',
+            'likes' => 245,
+            'comments' => 31,
+            'created_at' => date('Y-m-d H:i:s', strtotime('-12 hours'))
         ]
     ];
 }
