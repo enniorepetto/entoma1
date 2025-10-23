@@ -9,13 +9,33 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
 
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #111;
+            --text-secondary: #767676;
+            --border-color: #e1e5e9;
+            --hover-bg: #f1f3f4;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #3a3a3a;
+            --hover-bg: #3a3a3a;
+            --card-bg: #252525;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #ffffff;
-            color: #333;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
@@ -26,8 +46,8 @@
         /* SIDEBAR */
         .sidebar {
             width: 240px;
-            background: #ffffff;
-            border-right: 1px solid #e1e5e9;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
             padding: 20px;
             position: fixed;
             height: 100vh;
@@ -40,32 +60,31 @@
         }
 
         .logo-icon {
-        width: 90px;
-        height: 90px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 8px;
-        overflow: hidden;
+            width: 90px;
+            height: 90px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            overflow: hidden;
         }
 
         .logo-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .logo h1 {
             font-size: 24px;
             font-weight: 700;
-            color: #111;
+            color: var(--text-primary);
             margin-bottom: 4px;
         }
 
         .logo p {
             font-size: 12px;
-            color: #767676;
+            color: var(--text-secondary);
         }
 
         .menu {
@@ -77,7 +96,7 @@
             align-items: center;
             padding: 12px 16px;
             text-decoration: none;
-            color: #111;
+            color: var(--text-primary);
             border-radius: 24px;
             margin-bottom: 4px;
             transition: background-color 0.2s ease;
@@ -86,12 +105,17 @@
         }
 
         .menu-item:hover {
-            background-color: #f1f3f4;
+            background-color: var(--hover-bg);
         }
 
         .menu-item.active {
             background-color: #111;
             color: #ffffff;
+        }
+
+        [data-theme="dark"] .menu-item.active {
+            background-color: #ffffff;
+            color: #111;
         }
 
         .menu-item .icon {
@@ -111,7 +135,7 @@
         }
 
         .user-info:hover {
-            background-color: #f1f3f4;
+            background-color: var(--hover-bg);
         }
 
         .user-avatar {
@@ -139,7 +163,7 @@
 
         .user-handle {
             font-size: 12px;
-            color: #767676;
+            color: var(--text-secondary);
         }
 
         /* MAIN CONTENT */
@@ -169,7 +193,7 @@
         }
 
         .header p {
-            color: #767676;
+            color: var(--text-secondary);
             font-size: 16px;
         }
 
@@ -181,16 +205,17 @@
             width: 100%;
             max-width: 500px;
             padding: 12px 20px;
-            border: 1px solid #e1e5e9;
+            border: 1px solid var(--border-color);
             border-radius: 24px;
             font-size: 16px;
-            background-color: #f8f9fa;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
         .search-bar input:focus {
             outline: none;
             border-color: #1976d2;
-            background-color: #ffffff;
+            background-color: var(--bg-primary);
         }
 
         /* FEED GRID */
@@ -203,7 +228,7 @@
         .post-card {
             break-inside: avoid;
             margin: 0 8px 16px;
-            background: #ffffff;
+            background: var(--card-bg);
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -220,7 +245,7 @@
             width: 100%;
             height: auto;
             display: block;
-            background-color: #f1f3f4;
+            background-color: var(--bg-secondary);
         }
 
         .post-content {
@@ -259,7 +284,7 @@
         }
 
         .post-description {
-            color: #767676;
+            color: var(--text-secondary);
             font-size: 14px;
             margin-bottom: 8px;
             line-height: 1.4;
@@ -271,8 +296,8 @@
 
         .tag {
             display: inline-block;
-            background-color: #f1f3f4;
-            color: #333;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 12px;
@@ -284,7 +309,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            color: #767676;
+            color: var(--text-secondary);
             font-size: 14px;
         }
 
@@ -294,7 +319,183 @@
         }
 
         .post-stats span:hover {
-            color: #111;
+            color: var(--text-primary);
+        }
+
+        /* PROFILE SECTION */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #e91e63, #9c27b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-handle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 16px;
+        }
+
+        .profile-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .profile-stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .profile-tabs {
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .profile-tab {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .profile-tab.active {
+            color: var(--text-primary);
+            border-bottom-color: #e91e63;
+        }
+
+        /* SETTINGS SECTION */
+        .settings-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-card h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .settings-label-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .settings-label-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background-color: var(--border-color);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch.active {
+            background-color: #e91e63;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .btn-settings {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #e91e63, #9c27b0);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        .btn-settings:hover {
+            transform: translateY(-1px);
         }
 
         /* LOGIN OVERLAY */
@@ -320,7 +521,7 @@
         }
 
         .login-modal {
-            background: white;
+            background: var(--card-bg);
             border-radius: 16px;
             overflow: hidden;
             max-width: 800px;
@@ -340,14 +541,6 @@
             position: relative;
         }
 
-        .login-left::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="60" cy="30" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="30" cy="70" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-            opacity: 0.3;
-        }
-
         .login-decoration {
             color: white;
             text-align: center;
@@ -357,11 +550,6 @@
         .login-decoration h2 {
             font-size: 28px;
             margin-bottom: 16px;
-        }
-
-        .login-decoration p {
-            opacity: 0.9;
-            font-size: 16px;
         }
 
         .login-right {
@@ -385,9 +573,11 @@
         .form-group input {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #e1e5e9;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 16px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             transition: border-color 0.2s;
         }
 
@@ -422,7 +612,7 @@
 
         .login-switch {
             text-align: center;
-            color: #767676;
+            color: var(--text-secondary);
             font-size: 14px;
         }
 
@@ -470,13 +660,14 @@
         }
 
         .upload-area {
-            border: 2px dashed #e1e5e9;
+            border: 2px dashed var(--border-color);
             border-radius: 16px;
             padding: 48px 24px;
             text-align: center;
             margin-bottom: 24px;
             cursor: pointer;
             transition: border-color 0.2s ease;
+            background-color: var(--bg-secondary);
         }
 
         .upload-area:hover {
@@ -489,7 +680,7 @@
         }
 
         .upload-hint {
-            color: #767676;
+            color: var(--text-secondary);
             font-size: 14px;
             margin-top: 8px;
         }
@@ -503,11 +694,13 @@
         .form-group textarea {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid #e1e5e9;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 16px;
             resize: vertical;
             min-height: 100px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
         }
 
         .form-group textarea:focus {
@@ -523,9 +716,9 @@
 
         .btn-secondary {
             padding: 12px 24px;
-            background-color: #ffffff;
-            color: #111;
-            border: 1px solid #e1e5e9;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             font-weight: 500;
             cursor: pointer;
@@ -533,7 +726,7 @@
         }
 
         .btn-secondary:hover {
-            background-color: #f1f3f4;
+            background-color: var(--hover-bg);
         }
 
         /* LOADING STATES */
@@ -542,19 +735,23 @@
             justify-content: center;
             align-items: center;
             padding: 40px;
-            color: #767676;
+            color: var(--text-secondary);
         }
 
-        .loading::after {
-            content: "Cargando...";
-            animation: loading-dots 1.5s infinite;
+        .logout-btn {
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
         }
 
-        @keyframes loading-dots {
-            0% { content: "Cargando"; }
-            25% { content: "Cargando."; }
-            50% { content: "Cargando.."; }
-            75% { content: "Cargando..."; }
+        .logout-btn:hover {
+            background: var(--hover-bg);
         }
 
         /* RESPONSIVE */
@@ -568,7 +765,7 @@
                 height: auto;
                 position: relative;
                 border-right: none;
-                border-bottom: 1px solid #e1e5e9;
+                border-bottom: 1px solid var(--border-color);
             }
             
             .main-content {
@@ -589,7 +786,7 @@
                 white-space: nowrap;
             }
             
-            .feed-grid, .explore-grid, .trending-grid {
+            .feed-grid, .explore-grid, .trending-grid, .profile-grid {
                 columns: 2;
             }
             
@@ -598,22 +795,15 @@
                 max-height: 85vh;
                 overflow-y: auto;
             }
-        }
 
-        .logout-btn {
-            margin-top: 20px;
-            padding: 8px 16px;
-            background: none;
-            border: 1px solid #e1e5e9;
-            border-radius: 20px;
-            color: #767676;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
 
-        .logout-btn:hover {
-            background: #f1f3f4;
+            .profile-stats {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -661,9 +851,9 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-            <div class="logo-icon">
-            <img src="logo.png" alt="Entoma Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-</div>
+                <div class="logo-icon">
+                    <img src="logo.png" alt="Entoma Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                </div>
                 <h1>Entoma</h1>
                 <p>Tu estilo, tu comunidad</p>
             </div>
@@ -695,7 +885,7 @@
                 </div>
             </nav>
 
-            <div class="user-info" id="userInfo" style="display: none;">
+            <div class="user-info" id="userInfo" style="display: none;" onclick="showProfile()">
                 <div class="user-avatar" id="userAvatar">U</div>
                 <div class="user-details">
                     <span class="user-name" id="userName">Usuario</span>
@@ -728,7 +918,7 @@
                     <input type="text" placeholder="Buscar outfits, estilos..." id="searchInput">
                 </div>
                 <div class="feed-grid" id="feedGrid">
-                    <div class="loading"></div>
+                    <div class="loading">Cargando...</div>
                 </div>
             </section>
 
@@ -739,7 +929,7 @@
                     <p>Descubre nuevos estilos y tendencias</p>
                 </div>
                 <div class="explore-grid" id="exploreGrid">
-                    <div class="loading"></div>
+                    <div class="loading">Cargando...</div>
                 </div>
             </section>
 
@@ -797,7 +987,130 @@
                     <p>Los outfits más populares del momento</p>
                 </div>
                 <div class="trending-grid" id="trendingGrid">
-                    <div class="loading"></div>
+                    <div class="loading">Cargando...</div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="content-section">
+                <div class="profile-header">
+                    <div class="profile-avatar-large" id="profileAvatarLarge">U</div>
+                    <div class="profile-info">
+                        <h2 class="profile-name" id="profileName">Usuario</h2>
+                        <p class="profile-handle" id="profileHandle">@usuario</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <span class="profile-stat-value" id="profilePosts">0</span>
+                                <span class="profile-stat-label">Publicaciones</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="profile-stat-value" id="profileFollowers">0</span>
+                                <span class="profile-stat-label">Seguidores</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="profile-stat-value" id="profileFollowing">0</span>
+                                <span class="profile-stat-label">Siguiendo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-tabs">
+                    <div class="profile-tab active" data-tab="posts" onclick="switchProfileTab('posts')">
+                        📸 Mis Publicaciones
+                    </div>
+                    <div class="profile-tab" data-tab="saved" onclick="switchProfileTab('saved')">
+                        🔖 Guardados
+                    </div>
+                </div>
+
+                <div id="profilePostsTab" class="profile-tab-content">
+                    <div class="profile-grid" id="profilePostsGrid">
+                        <div class="loading">Cargando...</div>
+                    </div>
+                </div>
+
+                <div id="profileSavedTab" class="profile-tab-content" style="display: none;">
+                    <div class="profile-grid" id="profileSavedGrid">
+                        <div class="loading">Cargando...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Config Section -->
+            <section id="config" class="content-section">
+                <div class="header">
+                    <h2>Configuración</h2>
+                    <p>Personaliza tu experiencia en Entoma</p>
+                </div>
+
+                <div class="settings-container">
+                    <!-- Apariencia -->
+                    <div class="settings-card">
+                        <h3>🎨 Apariencia</h3>
+                        <div class="settings-item">
+                            <div class="settings-label">
+                                <span class="settings-label-title">Modo Oscuro</span>
+                                <span class="settings-label-desc">Cambia el tema de la aplicación</span>
+                            </div>
+                            <div class="toggle-switch" id="darkModeToggle" onclick="toggleDarkMode()">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacidad -->
+                    <div class="settings-card">
+                        <h3>🔒 Privacidad</h3>
+                        <div class="settings-item">
+                            <div class="settings-label">
+                                <span class="settings-label-title">Perfil Público</span>
+                                <span class="settings-label-desc">Permite que otros usuarios vean tu perfil</span>
+                            </div>
+                            <div class="toggle-switch active" id="publicProfileToggle" onclick="toggleSetting(this)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-label">
+                                <span class="settings-label-title">Permitir Comentarios</span>
+                                <span class="settings-label-desc">Los usuarios pueden comentar tus publicaciones</span>
+                            </div>
+                            <div class="toggle-switch active" id="commentsToggle" onclick="toggleSetting(this)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notificaciones -->
+                    <div class="settings-card">
+                        <h3>🔔 Notificaciones</h3>
+                        <div class="settings-item">
+                            <div class="settings-label">
+                                <span class="settings-label-title">Notificaciones por Email</span>
+                                <span class="settings-label-desc">Recibe notificaciones en tu correo</span>
+                            </div>
+                            <div class="toggle-switch active" id="emailNotificationsToggle" onclick="toggleSetting(this)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-label">
+                                <span class="settings-label-title">Notificaciones Push</span>
+                                <span class="settings-label-desc">Recibe notificaciones en tiempo real</span>
+                            </div>
+                            <div class="toggle-switch active" id="pushNotificationsToggle" onclick="toggleSetting(this)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cuenta -->
+                    <div class="settings-card">
+                        <h3>👤 Cuenta</h3>
+                        <button class="btn-settings" onclick="showEditProfile()">Editar Perfil</button>
+                        <button class="btn-settings" onclick="changePassword()" style="background: linear-gradient(45deg, #667eea, #764ba2);">Cambiar Contraseña</button>
+                    </div>
                 </div>
             </section>
         </main>
@@ -807,6 +1120,7 @@
         let isLoggedIn = false;
         let currentUser = null;
         let isLoginMode = true;
+        let currentProfileTab = 'posts';
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
@@ -815,7 +1129,36 @@
             setupCreateForm();
             checkSession();
             loadFeedPosts();
+            loadDarkModePreference();
         });
+
+        // Dark Mode
+        function loadDarkModePreference() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeToggle').classList.add('active');
+            }
+        }
+
+        function toggleDarkMode() {
+            const toggle = document.getElementById('darkModeToggle');
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            
+            if (isDark) {
+                document.body.removeAttribute('data-theme');
+                toggle.classList.remove('active');
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                toggle.classList.add('active');
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        function toggleSetting(element) {
+            element.classList.toggle('active');
+        }
 
         // Verificar sesión al cargar
         async function checkSession() {
@@ -831,7 +1174,6 @@
                     isLoggedIn = false;
                     currentUser = null;
                     updateUserInterface();
-                    // Mostrar login después de un breve retraso para mejor UX
                     setTimeout(() => {
                         showLogin();
                     }, 1000);
@@ -850,11 +1192,8 @@
                 item.addEventListener('click', function() {
                     const section = this.getAttribute('data-section');
                     if (section) {
-                        // Actualizar menu activo
                         menuItems.forEach(mi => mi.classList.remove('active'));
                         this.classList.add('active');
-                        
-                        // Mostrar sección
                         showSection(section);
                     }
                 });
@@ -862,19 +1201,120 @@
         }
 
         function showSection(sectionName) {
-            // Ocultar todas las secciones
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => section.classList.remove('active'));
             
-            // Mostrar sección objetivo
             const targetSection = document.getElementById(sectionName);
             if (targetSection) {
                 targetSection.classList.add('active');
                 
-                // Cargar contenido según sección
                 if (sectionName === 'explore') loadExplorePosts();
                 if (sectionName === 'trending') loadTrendingPosts();
+                if (sectionName === 'profile') loadProfile();
             }
+        }
+
+        function showProfile() {
+            if (!showLoginIfNeeded()) return;
+            
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(mi => mi.classList.remove('active'));
+            
+            showSection('profile');
+        }
+
+        function switchProfileTab(tab) {
+            currentProfileTab = tab;
+            
+            const tabs = document.querySelectorAll('.profile-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            const activeTab = document.querySelector(`.profile-tab[data-tab="${tab}"]`);
+            if (activeTab) activeTab.classList.add('active');
+            
+            document.getElementById('profilePostsTab').style.display = tab === 'posts' ? 'block' : 'none';
+            document.getElementById('profileSavedTab').style.display = tab === 'saved' ? 'block' : 'none';
+            
+            if (tab === 'posts') {
+                loadUserPosts();
+            } else if (tab === 'saved') {
+                loadSavedPosts();
+            }
+        }
+
+        async function loadProfile() {
+            if (!currentUser) return;
+            
+            document.getElementById('profileAvatarLarge').textContent = currentUser.avatar;
+            document.getElementById('profileName').textContent = currentUser.nombre + ' ' + (currentUser.apellido || '');
+            document.getElementById('profileHandle').textContent = '@' + currentUser.email.split('@')[0];
+            
+            loadUserPosts();
+        }
+
+        async function loadUserPosts() {
+            if (!currentUser) return;
+            
+            const grid = document.getElementById('profilePostsGrid');
+            grid.innerHTML = '<div class="loading">Cargando...</div>';
+            
+            try {
+                const response = await fetch(`api_posts.php?action=user&user_id=${currentUser.id}`);
+                const posts = await response.json();
+                
+                grid.innerHTML = '';
+                
+                if (posts.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">Aún no tienes publicaciones. ¡Crea tu primera outfit!</div>';
+                    document.getElementById('profilePosts').textContent = '0';
+                    return;
+                }
+                
+                document.getElementById('profilePosts').textContent = posts.length;
+                
+                posts.forEach(post => {
+                    const postElement = createPostCard(post);
+                    grid.appendChild(postElement);
+                });
+                
+            } catch (error) {
+                console.error('Error cargando posts del usuario:', error);
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">Error al cargar tus publicaciones</div>';
+            }
+        }
+
+        async function loadSavedPosts() {
+            const grid = document.getElementById('profileSavedGrid');
+            grid.innerHTML = '<div class="loading">Cargando...</div>';
+            
+            try {
+                const response = await fetch('api_posts.php?action=saved');
+                const posts = await response.json();
+                
+                grid.innerHTML = '';
+                
+                if (posts.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">No tienes publicaciones guardadas</div>';
+                    return;
+                }
+                
+                posts.forEach(post => {
+                    const postElement = createPostCard(post);
+                    grid.appendChild(postElement);
+                });
+                
+            } catch (error) {
+                console.error('Error cargando posts guardados:', error);
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">Error al cargar guardados</div>';
+            }
+        }
+
+        function showEditProfile() {
+            alert('Función de editar perfil en desarrollo.\nPronto podrás cambiar tu foto, bio y más información.');
+        }
+
+        function changePassword() {
+            alert('Función de cambiar contraseña en desarrollo.\nRecibirás un email para restablecer tu contraseña.');
         }
 
         // Funciones de login
@@ -883,7 +1323,7 @@
         }
 
         function closeLogin() {
-                document.getElementById('loginOverlay').classList.remove('active');
+            document.getElementById('loginOverlay').classList.remove('active');
         }
 
         function showLoginIfNeeded() {
@@ -924,11 +1364,9 @@
             const errorDiv = document.getElementById('errorMessage');
             const successDiv = document.getElementById('successMessage');
             
-            // Ocultar ambos mensajes
             errorDiv.style.display = 'none';
             successDiv.style.display = 'none';
             
-            // Mostrar el mensaje apropiado
             if (type === 'error') {
                 errorDiv.textContent = message;
                 errorDiv.style.display = 'block';
@@ -937,14 +1375,12 @@
                 successDiv.style.display = 'block';
             }
             
-            // Ocultar después de 5 segundos
             setTimeout(() => {
                 errorDiv.style.display = 'none';
                 successDiv.style.display = 'none';
             }, 5000);
         }
 
-        // Manejo del formulario de auth
         document.getElementById('authForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -983,7 +1419,7 @@
                     updateUserInterface();
                     closeLogin();
                     showMessage('¡Bienvenido de vuelta!', 'success');
-                    loadFeedPosts(); // Recargar feed con datos del usuario
+                    loadFeedPosts();
                 } else {
                     showMessage(data.message, 'error');
                 }
@@ -1064,10 +1500,9 @@
             }
         }
 
-        // Funciones para cargar posts
         async function loadFeedPosts() {
             const feedGrid = document.getElementById('feedGrid');
-            feedGrid.innerHTML = '<div class="loading"></div>';
+            feedGrid.innerHTML = '<div class="loading">Cargando...</div>';
             
             try {
                 const response = await fetch('api_posts.php?action=feed');
@@ -1080,7 +1515,7 @@
                 feedGrid.innerHTML = '';
                 
                 if (posts.length === 0) {
-                    feedGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #767676;">No hay publicaciones disponibles.</div>';
+                    feedGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">No hay publicaciones disponibles.</div>';
                     return;
                 }
                 
@@ -1092,7 +1527,7 @@
             } catch (error) {
                 console.error('Error cargando feed:', error);
                 feedGrid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #767676;">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">
                         Error al cargar las publicaciones<br>
                         <button onclick="loadFeedPosts()" style="margin-top: 10px; padding: 8px 16px; background: #111; color: white; border: none; border-radius: 8px; cursor: pointer;">Reintentar</button>
                     </div>
@@ -1102,7 +1537,7 @@
 
         async function loadExplorePosts() {
             const exploreGrid = document.getElementById('exploreGrid');
-            exploreGrid.innerHTML = '<div class="loading"></div>';
+            exploreGrid.innerHTML = '<div class="loading">Cargando...</div>';
             
             try {
                 const response = await fetch('api_posts.php?action=explore');
@@ -1117,13 +1552,13 @@
                 
             } catch (error) {
                 console.error('Error cargando explore:', error);
-                exploreGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #767676;">Error al cargar contenido</div>';
+                exploreGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">Error al cargar contenido</div>';
             }
         }
 
         async function loadTrendingPosts() {
             const trendingGrid = document.getElementById('trendingGrid');
-            trendingGrid.innerHTML = '<div class="loading"></div>';
+            trendingGrid.innerHTML = '<div class="loading">Cargando...</div>';
             
             try {
                 const response = await fetch('api_posts.php?action=trending');
@@ -1138,7 +1573,7 @@
                 
             } catch (error) {
                 console.error('Error cargando trending:', error);
-                trendingGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #767676;">Error al cargar tendencias</div>';
+                trendingGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">Error al cargar tendencias</div>';
             }
         }
 
@@ -1177,7 +1612,6 @@
             return card;
         }
 
-        // Configurar formulario de creación
         function setupCreateForm() {
             const uploadArea = document.querySelector('.upload-area');
             const fileInput = document.getElementById('foto');
@@ -1197,12 +1631,12 @@
                 });
                 
                 uploadArea.addEventListener('dragleave', function() {
-                    this.style.borderColor = '#e1e5e9';
+                    this.style.borderColor = 'var(--border-color)';
                 });
                 
                 uploadArea.addEventListener('drop', function(e) {
                     e.preventDefault();
-                    this.style.borderColor = '#e1e5e9';
+                    this.style.borderColor = 'var(--border-color)';
                     
                     const files = e.dataTransfer.files;
                     if (files.length > 0 && fileInput) {
@@ -1239,18 +1673,14 @@
             reader.readAsDataURL(file);
         }
 
-        // Funciones de interacción
         function likePost(postId) {
             if (!showLoginIfNeeded()) return;
             
-            // Aquí podrías hacer una llamada al backend para guardar el like
             console.log('Like post:', postId);
             
-            // Por ahora solo mostramos un mensaje
             const heartSpan = event.target;
             heartSpan.style.color = '#e91e63';
             
-            // Incrementar contador visualmente
             const currentLikes = parseInt(heartSpan.textContent.replace('❤️ ', ''));
             heartSpan.textContent = '❤️ ' + (currentLikes + 1);
         }
@@ -1260,7 +1690,6 @@
             alert('Función de guardar borrador en desarrollo');
         }
 
-        // Búsqueda
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             const posts = document.querySelectorAll('.post-card');
@@ -1280,13 +1709,13 @@
                 }
             });
         });
-        // Cerrar modal al hacer click fuera
+
         document.getElementById('loginOverlay').addEventListener('click', function(e) {
-             if (e.target === this) {
-        closeLogin();
+            if (e.target === this) {
+                closeLogin();
             }
         });
-        // Exponer funciones necesarias globalmente
+
         window.showLogin = showLogin;
         window.closeLogin = closeLogin;
         window.toggleForm = toggleForm;
@@ -1295,6 +1724,12 @@
         window.likePost = likePost;
         window.saveDraft = saveDraft;
         window.loadFeedPosts = loadFeedPosts;
+        window.showProfile = showProfile;
+        window.switchProfileTab = switchProfileTab;
+        window.toggleDarkMode = toggleDarkMode;
+        window.toggleSetting = toggleSetting;
+        window.showEditProfile = showEditProfile;
+        window.changePassword = changePassword;
     </script>
 </body>
 </html>
