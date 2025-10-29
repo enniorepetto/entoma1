@@ -218,7 +218,6 @@
             background-color: var(--bg-primary);
         }
 
-        /* FEED GRID */
         .feed-grid, .explore-grid, .trending-grid, .profile-grid {
             columns: 4;
             column-gap: 16px;
@@ -653,7 +652,6 @@
             text-align: center;
         }
 
-        /* CREATE FORM */
         .create-form {
             max-width: 600px;
             margin: 0 auto;
@@ -729,7 +727,6 @@
             background-color: var(--hover-bg);
         }
 
-        /* LOADING STATES */
         .loading {
             display: flex;
             justify-content: center;
@@ -808,7 +805,6 @@
     </style>
 </head>
 <body>
-    <!-- Login Overlay -->
     <div id="loginOverlay" class="login-overlay">
         <div class="login-modal">
             <button class="close-login" onclick="closeLogin()">&times;</button>
@@ -848,7 +844,6 @@
     </div>
 
     <div class="container">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
                 <div class="logo-icon">
@@ -906,9 +901,7 @@
             </button>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Feed Section -->
             <section id="feed" class="content-section active">
                 <div class="header">
                     <h2>Tu Feed</h2>
@@ -922,7 +915,6 @@
                 </div>
             </section>
 
-            <!-- Explore Section -->
             <section id="explore" class="content-section">
                 <div class="header">
                     <h2>Explorar</h2>
@@ -932,53 +924,76 @@
                     <div class="loading">Cargando...</div>
                 </div>
             </section>
-
-            <!-- Create Section -->
+            
             <section id="create" class="content-section">
-                <div class="header">
-                    <h2>Crear Outfit</h2>
-                    <p>Comparte tu estilo con la comunidad</p>
+    <div class="header">
+        <h2>Crear Outfit</h2>
+        <p>Comparte tu estilo con la comunidad</p>
+    </div>
+    <div class="create-form">
+        <form id="createOutfitForm" action="crear_publicacion.php" method="POST" enctype="multipart/form-data">
+            
+            <div id="imagePreviewContainer" style="display: none; margin-bottom: 20px; text-align: center;">
+                <img id="imagePreview" src="" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 12px; object-fit: contain;">
+                <p style="margin-top: 10px; color: var(--text-secondary); font-size: 14px;">
+                    <span id="fileName"></span> (<span id="fileSize"></span>)
+                </p>
+            </div>
+            
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fotoInput').click()">
+                <div class="upload-placeholder">
+                    <div class="upload-icon">📸</div>
+                    <p style="font-weight: 600; margin-bottom: 8px;">Sube tu foto de outfit</p>
+                    <p class="upload-hint">Haz clic aquí para seleccionar una imagen (JPG, PNG, GIF - máx 5MB)</p>
                 </div>
-                <div class="create-form">
-                    <form id="createOutfitForm" action="crear_publicacion.php" method="POST" enctype="multipart/form-data">
-                        <div class="upload-area" onclick="document.getElementById('foto').click()">
-                            <div class="upload-placeholder">
-                                <div class="upload-icon">⬆️</div>
-                                <p>Sube tu foto de outfit</p>
-                                <p class="upload-hint">Arrastra y suelta tu imagen aquí, o haz clic para seleccionar</p>
-                            </div>
-                            <input type="file" id="foto" name="foto" accept="image/*" style="display: none;" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="titulo">Título del outfit</label>
-                            <input type="text" id="titulo" name="titulo" placeholder="Ej: Look casual para fin de semana" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="descripcion">Descripción</label>
-                            <textarea id="descripcion" name="descripcion" placeholder="Cuenta la historia detrás de tu outfit, dónde lo usarías, qué te inspiró..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="etiquetas">Etiquetas</label>
-                            <input type="text" id="etiquetas" name="etiquetas" placeholder="casual, streetwear, vintage (separado por comas)">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="ubicacion">Ubicación (opcional)</label>
-                            <input type="text" id="ubicacion" name="ubicacion" placeholder="¿Dónde tomaste esta foto?">
-                        </div>
-                        
-                        <input type="hidden" name="usuario_id" id="usuarioIdInput">
-                        
-                        <div class="form-actions">
-                            <button type="button" class="btn-secondary" onclick="saveDraft()">Guardar borrador</button>
-                            <button type="submit" class="btn-primary">Publicar outfit</button>
-                        </div>
-                    </form>
-                </div>
-            </section>
+            </div>
+            
+            <input type="file" 
+                   id="fotoInput" 
+                   name="foto" 
+                   accept="image/*" 
+                   style="display: none;" 
+                   required>
+            
+            <div class="form-group">
+                <label for="tituloInput">Título del outfit *</label>
+                <input type="text" 
+                       id="tituloInput" 
+                       name="titulo" 
+                       placeholder="Ej: Look casual para fin de semana" 
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label for="descripcionInput">Descripción</label>
+                <textarea id="descripcionInput" 
+                          name="descripcion" 
+                          placeholder="Cuenta la historia detrás de tu outfit, dónde lo usarías, qué te inspiró..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="etiquetasInput">Etiquetas</label>
+                <input type="text" 
+                       id="etiquetasInput" 
+                       name="etiquetas" 
+                       placeholder="casual, streetwear, vintage (separado por comas)">
+            </div>
+            
+            <div class="form-group">
+                <label for="ubicacionInput">Ubicación (opcional)</label>
+                <input type="text" 
+                       id="ubicacionInput" 
+                       name="ubicacion" 
+                       placeholder="¿Dónde tomaste esta foto?">
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="resetForm()">Limpiar</button>
+                <button type="submit" class="btn-primary" id="submitBtn">Publicar outfit</button>
+            </div>
+        </form>
+    </div>
+</section>
 
             <!-- Trending Section -->
             <section id="trending" class="content-section">
@@ -1613,40 +1628,103 @@
         }
 
         function setupCreateForm() {
-            const uploadArea = document.querySelector('.upload-area');
-            const fileInput = document.getElementById('foto');
+    const uploadArea = document.querySelector('.upload-area');
+    const fileInput = document.getElementById('foto');
+    const createForm = document.getElementById('createOutfitForm');
+    
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+    }
+    
+    if (uploadArea) {
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#1976d2';
+            this.style.backgroundColor = 'rgba(25, 118, 210, 0.05)';
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.style.borderColor = 'var(--border-color)';
+            this.style.backgroundColor = 'var(--bg-secondary)';
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--border-color)';
+            this.style.backgroundColor = 'var(--bg-secondary)';
             
-            if (fileInput) {
-                fileInput.addEventListener('change', function(e) {
-                    if (e.target.files.length > 0) {
-                        handleFileSelect(e.target.files[0]);
-                    }
-                });
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && fileInput) {
+                fileInput.files = files;
+                handleFileSelect(files[0]);
+            }
+        });
+    }
+    
+    // Validar antes de enviar
+    if (createForm) {
+        createForm.addEventListener('submit', function(e) {
+            const foto = document.getElementById('foto');
+            const titulo = document.getElementById('titulo');
+            
+            if (!foto.files || foto.files.length === 0) {
+                e.preventDefault();
+                alert('Por favor selecciona una imagen para tu outfit');
+                return false;
             }
             
-            if (uploadArea) {
-                uploadArea.addEventListener('dragover', function(e) {
-                    e.preventDefault();
-                    this.style.borderColor = '#1976d2';
-                });
-                
-                uploadArea.addEventListener('dragleave', function() {
-                    this.style.borderColor = 'var(--border-color)';
-                });
-                
-                uploadArea.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    this.style.borderColor = 'var(--border-color)';
-                    
-                    const files = e.dataTransfer.files;
-                    if (files.length > 0 && fileInput) {
-                        fileInput.files = files;
-                        handleFileSelect(files[0]);
-                    }
-                });
+            if (!titulo.value.trim()) {
+                e.preventDefault();
+                alert('Por favor agrega un título a tu outfit');
+                return false;
             }
-        }
+            
+            // Mostrar loading
+            const submitBtn = createForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Publicando...';
+            }
+        });
+    }
+}
 
+function handleFileSelect(file) {
+    const uploadArea = document.querySelector('.upload-area');
+    if (!uploadArea) return;
+    
+    if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona una imagen válida');
+        document.getElementById('foto').value = '';
+        return;
+    }
+    
+    if (file.size > 5000000) {
+        alert('La imagen es demasiado grande (máximo 5MB)');
+        document.getElementById('foto').value = '';
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadArea.innerHTML = `
+            <div style="position: relative; max-width: 100%; max-height: 300px;">
+                <img src="${e.target.result}" alt="Preview" 
+                     style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
+                <div style="margin-top: 16px; text-align: center;">
+                    <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">✓ Imagen seleccionada</p>
+                    <p style="font-size: 14px; color: var(--text-secondary);">${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>
+                    <p class="upload-hint" style="margin-top: 8px;">Haz clic para cambiar la imagen</p>
+                </div>
+            </div>
+        `;
+    };
+    reader.readAsDataURL(file);
+}
         function handleFileSelect(file) {
             const uploadArea = document.querySelector('.upload-area');
             if (!uploadArea) return;
@@ -1673,63 +1751,193 @@
             reader.readAsDataURL(file);
         }
 
-        function likePost(postId) {
-            if (!showLoginIfNeeded()) return;
-            
-            console.log('Like post:', postId);
-            
-            const heartSpan = event.target;
-            heartSpan.style.color = '#e91e63';
-            
-            const currentLikes = parseInt(heartSpan.textContent.replace('❤️ ', ''));
-            heartSpan.textContent = '❤️ ' + (currentLikes + 1);
-        }
-
-        function saveDraft() {
-            if (!showLoginIfNeeded()) return;
-            alert('Función de guardar borrador en desarrollo');
-        }
-
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const posts = document.querySelectorAll('.post-card');
-            
-            posts.forEach(post => {
-                const title = post.querySelector('.post-title').textContent.toLowerCase();
-                const tags = Array.from(post.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
-                const description = post.querySelector('.post-description');
-                const descText = description ? description.textContent.toLowerCase() : '';
-                
-                if (title.includes(searchTerm) || 
-                    tags.some(tag => tag.includes(searchTerm)) || 
-                    descText.includes(searchTerm)) {
-                    post.style.display = 'block';
-                } else {
-                    post.style.display = 'none';
-                }
-            });
+    async function likePost(postId, event) {
+    if (!showLoginIfNeeded()) return;
+    
+    event.stopPropagation();
+    
+    try {
+        const formData = new FormData();
+        formData.append('post_id', postId);
+        
+        const response = await fetch('api_posts.php?action=like', {
+            method: 'POST',
+            body: formData
         });
-
-        document.getElementById('loginOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLogin();
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const heartSpan = event.currentTarget;
+            
+            if (data.action === 'liked') {
+                heartSpan.style.color = '#e91e63';
+                heartSpan.innerHTML = '❤️ ' + data.total_likes;
+            } else {
+                heartSpan.style.color = 'var(--text-secondary)';
+                heartSpan.innerHTML = '🤍 ' + data.total_likes;
             }
-        });
+        } else {
+            showMessage(data.message || 'Error al dar like', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('Error al procesar like', 'error');
+    }
+}
 
-        window.showLogin = showLogin;
-        window.closeLogin = closeLogin;
-        window.toggleForm = toggleForm;
-        window.logout = logout;
-        window.showLoginIfNeeded = showLoginIfNeeded;
-        window.likePost = likePost;
-        window.saveDraft = saveDraft;
-        window.loadFeedPosts = loadFeedPosts;
-        window.showProfile = showProfile;
-        window.switchProfileTab = switchProfileTab;
-        window.toggleDarkMode = toggleDarkMode;
-        window.toggleSetting = toggleSetting;
-        window.showEditProfile = showEditProfile;
-        window.changePassword = changePassword;
+function createPostCard(post, isTrending = false) {
+    const card = document.createElement('div');
+    card.className = 'post-card';
+    
+    const trendingBadge = isTrending ? 
+        '<div style="background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 8px; text-align: center;">🔥 Trending</div>' : '';
+    
+    const tags = Array.isArray(post.tags) ? post.tags : 
+                 (post.tags ? String(post.tags).split(',').map(tag => tag.trim()) : []);
+    
+    const likedClass = post.liked_by_user ? 'style="color: #e91e63;"' : '';
+    const likeIcon = post.liked_by_user ? '❤️' : '🤍';
+    
+    card.innerHTML = `
+        ${trendingBadge}
+        <img src="${post.image}" alt="${post.title}" class="post-image" 
+             onerror="this.src='https://via.placeholder.com/300x400/f1f3f4/767676?text=Imagen+no+disponible'">
+        <div class="post-content">
+            <h3 class="post-title">${post.title}</h3>
+            <div class="post-user">
+                <div class="post-user-avatar">${post.user_avatar}</div>
+                <span class="post-user-name">${post.user}</span>
+            </div>
+            ${post.description ? `<p class="post-description">${post.description.substring(0, 100)}${post.description.length > 100 ? '...' : ''}</p>` : ''}
+            <div class="post-tags">
+                ${tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+            </div>
+            <div class="post-stats">
+                <span onclick="likePost(${post.id}, event)" ${likedClass}>${likeIcon} ${post.likes}</span>
+                <span onclick="showLoginIfNeeded()">💬 ${post.comments}</span>
+                <span onclick="showLoginIfNeeded()">🔖</span>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+function saveDraft() {
+    if (!showLoginIfNeeded()) return;
+    alert('Función de guardar borrador en desarrollo');
+}
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const posts = document.querySelectorAll('.post-card');
+    
+    posts.forEach(post => {
+        const title = post.querySelector('.post-title').textContent.toLowerCase();
+        const tags = Array.from(post.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
+        const description = post.querySelector('.post-description');
+        const descText = description ? description.textContent.toLowerCase() : '';
+        
+        if (title.includes(searchTerm) || 
+            tags.some(tag => tag.includes(searchTerm)) || 
+            descText.includes(searchTerm)) {
+            post.style.display = 'block';
+        } else {
+            post.style.display = 'none';
+        }
+    });
+});
+
+document.getElementById('loginOverlay').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeLogin();
+    }
+});
+
+window.showLogin = showLogin;
+window.closeLogin = closeLogin;
+window.toggleForm = toggleForm;
+window.logout = logout;
+window.showLoginIfNeeded = showLoginIfNeeded;
+window.likePost = likePost;
+window.saveDraft = saveDraft;
+window.loadFeedPosts = loadFeedPosts;
+window.showProfile = showProfile;
+window.switchProfileTab = switchProfileTab;
+window.toggleDarkMode = toggleDarkMode;
+window.toggleSetting = toggleSetting;
+window.showEditProfile = showEditProfile;
+window.changePassword = changePassword;
     </script>
+    <script>
+document.getElementById('fotoInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    
+    if (!file) {
+        return;
+    }
+    
+    // Validar que sea imagen
+    if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona una imagen válida (JPG, PNG, GIF)');
+        this.value = '';
+        return;
+    }
+    
+    // Validar tamaño (5MB máximo)
+    if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen es muy grande. Máximo 5MB permitidos.');
+        this.value = '';
+        return;
+    }
+    
+    // Mostrar preview
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        document.getElementById('imagePreview').src = event.target.result;
+        document.getElementById('imagePreviewContainer').style.display = 'block';
+        document.getElementById('uploadArea').style.display = 'none';
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
+    };
+    reader.readAsDataURL(file);
+});
+
+// Validar antes de enviar
+document.getElementById('createOutfitForm').addEventListener('submit', function(e) {
+    const fotoInput = document.getElementById('fotoInput');
+    const tituloInput = document.getElementById('tituloInput');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Verificar que haya archivo
+    if (!fotoInput.files || fotoInput.files.length === 0) {
+        e.preventDefault();
+        alert('Por favor selecciona una imagen para tu outfit');
+        return false;
+    }
+    
+    // Verificar título
+    if (!tituloInput.value.trim()) {
+        e.preventDefault();
+        alert('Por favor agrega un título a tu outfit');
+        tituloInput.focus();
+        return false;
+    }
+    
+    // Deshabilitar botón y mostrar loading
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Publicando...';
+    submitBtn.style.opacity = '0.7';
+    
+    return true;
+});
+
+function resetForm() {
+    document.getElementById('createOutfitForm').reset();
+    document.getElementById('imagePreviewContainer').style.display = 'none';
+    document.getElementById('uploadArea').style.display = 'block';
+}
+</script>
 </body>
 </html>
