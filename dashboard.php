@@ -19,6 +19,7 @@
             --border-color: #e1e5e9;
             --hover-bg: #f1f3f4;
             --card-bg: #ffffff;
+            --accent-color: #e91e63;
         }
 
         [data-theme="dark"] {
@@ -166,6 +167,23 @@
             color: var(--text-secondary);
         }
 
+        .logout-btn {
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .logout-btn:hover {
+            background: var(--hover-bg);
+        }
+
         /* MAIN CONTENT */
         .main-content {
             flex: 1;
@@ -232,7 +250,6 @@
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
         }
 
         .post-card:hover {
@@ -245,6 +262,7 @@
             height: auto;
             display: block;
             background-color: var(--bg-secondary);
+            cursor: pointer;
         }
 
         .post-content {
@@ -304,6 +322,7 @@
             margin-bottom: 4px;
         }
 
+        /* POST STATS CON BOTONES DE INTERACCIÓN */
         .post-stats {
             display: flex;
             align-items: center;
@@ -312,16 +331,271 @@
             font-size: 14px;
         }
 
-        .post-stats span {
+        .stat-button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: all 0.2s;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
-        .post-stats span:hover {
+        .stat-button:hover {
+            background-color: var(--hover-bg);
             color: var(--text-primary);
         }
 
-        /* PROFILE SECTION */
+        .stat-button.liked {
+            color: #e91e63;
+        }
+
+        .stat-button.saved {
+            color: #ffd700;
+        }
+
+        .stat-button .icon {
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .stat-button:active .icon {
+            transform: scale(1.2);
+        }
+
+        /* MODAL DE COMENTARIOS */
+        .comments-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .comments-modal.active {
+            display: flex;
+        }
+
+        .comments-modal-content {
+            background: var(--card-bg);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .comments-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comments-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-comments {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .close-comments:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #e91e63, #9c27b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .comment-time {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .comment-delete {
+            background: none;
+            border: none;
+            color: #e53e3e;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .comment-delete:hover {
+            background-color: rgba(229, 62, 62, 0.1);
+        }
+
+        .comments-form {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .comments-form input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            font-size: 14px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .comments-form input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .comments-form button {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #e91e63, #9c27b0);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .comments-form button:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .comments-form button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        /* TOAST NOTIFICATION */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 3000;
+            animation: slideUp 0.3s ease;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-left-color: #38a169;
+        }
+
+        .toast.error {
+            border-left-color: #e53e3e;
+        }
+
+        /* SECCIONES ADICIONALES */
         .profile-header {
             display: flex;
             align-items: center;
@@ -404,7 +678,7 @@
             border-bottom-color: #e91e63;
         }
 
-        /* SETTINGS SECTION */
+        /* SETTINGS */
         .settings-container {
             max-width: 600px;
             margin: 0 auto;
@@ -497,6 +771,102 @@
             transform: translateY(-1px);
         }
 
+        /* CREATE FORM */
+        .create-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 48px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+            background-color: var(--bg-secondary);
+        }
+
+        .upload-area:hover {
+            border-color: #1976d2;
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .upload-hint {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #e91e63, #9c27b0);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
         /* LOGIN OVERLAY */
         .login-overlay {
             position: fixed;
@@ -565,62 +935,6 @@
             text-align: center;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 16px;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #e91e63;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(45deg, #e91e63, #9c27b0);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: transform 0.2s;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.6;
-            transform: none;
-            cursor: not-allowed;
-        }
-
-        .login-switch {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .login-switch a {
-            color: #e91e63;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
         .close-login {
             position: absolute;
             top: 16px;
@@ -652,111 +966,20 @@
             text-align: center;
         }
 
-        .create-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .upload-area {
-            border: 2px dashed var(--border-color);
-            border-radius: 16px;
-            padding: 48px 24px;
+        .login-switch {
             text-align: center;
-            margin-bottom: 24px;
-            cursor: pointer;
-            transition: border-color 0.2s ease;
-            background-color: var(--bg-secondary);
-        }
-
-        .upload-area:hover {
-            border-color: #1976d2;
-        }
-
-        .upload-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
-        }
-
-        .upload-hint {
             color: var(--text-secondary);
             font-size: 14px;
-            margin-top: 8px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 16px;
-            resize: vertical;
-            min-height: 100px;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #1976d2;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-
-        .btn-secondary {
-            padding: 12px 24px;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--hover-bg);
-        }
-
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            color: var(--text-secondary);
-        }
-
-        .logout-btn {
-            margin-top: 20px;
-            padding: 8px 16px;
-            background: none;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-
-        .logout-btn:hover {
-            background: var(--hover-bg);
+        .login-switch a {
+            color: #e91e63;
+            text-decoration: none;
+            font-weight: 600;
         }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
             .sidebar {
                 width: 100%;
                 height: auto;
@@ -769,42 +992,40 @@
                 margin-left: 0;
             }
             
-            .menu {
-                display: flex;
-                overflow-x: auto;
-                gap: 8px;
-            }
-            
-            .menu-item {
-                flex-shrink: 0;
-                margin-bottom: 0;
-                margin-right: 8px;
-                padding: 8px 16px;
-                white-space: nowrap;
-            }
-            
             .feed-grid, .explore-grid, .trending-grid, .profile-grid {
                 columns: 2;
             }
-            
+
             .login-modal {
                 flex-direction: column;
-                max-height: 85vh;
-                overflow-y: auto;
             }
 
             .profile-header {
                 flex-direction: column;
                 text-align: center;
             }
-
-            .profile-stats {
-                justify-content: center;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Modal de Comentarios -->
+    <div class="comments-modal" id="commentsModal">
+        <div class="comments-modal-content">
+            <div class="comments-header">
+                <h3>Comentarios</h3>
+                <button class="close-comments" onclick="closeCommentsModal()">&times;</button>
+            </div>
+            <div class="comments-list" id="commentsList">
+                <div class="no-comments">Cargando comentarios...</div>
+            </div>
+            <div class="comments-form">
+                <input type="text" id="commentInput" placeholder="Escribe un comentario...">
+                <button onclick="submitComment()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Overlay -->
     <div id="loginOverlay" class="login-overlay">
         <div class="login-modal">
             <button class="close-login" onclick="closeLogin()">&times;</button>
@@ -847,7 +1068,7 @@
         <aside class="sidebar">
             <div class="logo">
                 <div class="logo-icon">
-                    <img src="logo.png" alt="Entoma Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    <img src="logo.png" alt="Entoma Logo">
                 </div>
                 <h1>Entoma</h1>
                 <p>Tu estilo, tu comunidad</p>
@@ -902,6 +1123,7 @@
         </aside>
 
         <main class="main-content">
+            <!-- FEED SECTION -->
             <section id="feed" class="content-section active">
                 <div class="header">
                     <h2>Tu Feed</h2>
@@ -915,6 +1137,7 @@
                 </div>
             </section>
 
+            <!-- EXPLORE SECTION -->
             <section id="explore" class="content-section">
                 <div class="header">
                     <h2>Explorar</h2>
@@ -925,77 +1148,91 @@
                 </div>
             </section>
             
+            <!-- CREATE SECTION -->
             <section id="create" class="content-section">
-    <div class="header">
-        <h2>Crear Outfit</h2>
-        <p>Comparte tu estilo con la comunidad</p>
-    </div>
-    <div class="create-form">
-        <form id="createOutfitForm" action="crear_publicacion.php" method="POST" enctype="multipart/form-data">
-            
-            <div id="imagePreviewContainer" style="display: none; margin-bottom: 20px; text-align: center;">
-                <img id="imagePreview" src="" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 12px; object-fit: contain;">
-                <p style="margin-top: 10px; color: var(--text-secondary); font-size: 14px;">
-                    <span id="fileName"></span> (<span id="fileSize"></span>)
-                </p>
-            </div>
-            
-            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fotoInput').click()">
-                <div class="upload-placeholder">
-                    <div class="upload-icon">📸</div>
-                    <p style="font-weight: 600; margin-bottom: 8px;">Sube tu foto de outfit</p>
-                    <p class="upload-hint">Haz clic aquí para seleccionar una imagen (JPG, PNG, GIF - máx 5MB)</p>
+                <div class="header">
+                    <h2>Crear Outfit</h2>
+                    <p>Comparte tu estilo con la comunidad</p>
                 </div>
-            </div>
-            
-            <input type="file" 
-                   id="fotoInput" 
-                   name="foto" 
-                   accept="image/*" 
-                   style="display: none;" 
-                   required>
-            
-            <div class="form-group">
-                <label for="tituloInput">Título del outfit *</label>
-                <input type="text" 
-                       id="tituloInput" 
-                       name="titulo" 
-                       placeholder="Ej: Look casual para fin de semana" 
-                       required>
-            </div>
-            
-            <div class="form-group">
-                <label for="descripcionInput">Descripción</label>
-                <textarea id="descripcionInput" 
-                          name="descripcion" 
-                          placeholder="Cuenta la historia detrás de tu outfit, dónde lo usarías, qué te inspiró..."></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="etiquetasInput">Etiquetas</label>
-                <input type="text" 
-                       id="etiquetasInput" 
-                       name="etiquetas" 
-                       placeholder="casual, streetwear, vintage (separado por comas)">
-            </div>
-            
-            <div class="form-group">
-                <label for="ubicacionInput">Ubicación (opcional)</label>
-                <input type="text" 
-                       id="ubicacionInput" 
-                       name="ubicacion" 
-                       placeholder="¿Dónde tomaste esta foto?">
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="btn-secondary" onclick="resetForm()">Limpiar</button>
-                <button type="submit" class="btn-primary" id="submitBtn">Publicar outfit</button>
-            </div>
-        </form>
-    </div>
-</section>
+                <div class="create-form">
+                    <form id="createOutfitForm" action="crear_publicacion.php" method="POST" enctype="multipart/form-data">
+                        
+                        <div id="imagePreviewContainer" style="display: none; margin-bottom: 20px; text-align: center;">
+                            <img id="imagePreview" src="" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 12px; object-fit: contain;">
+                            <p style="margin-top: 10px; color: var(--text-secondary); font-size: 14px;">
+                                <span id="fileName"></span> (<span id="fileSize"></span>)
+                            </p>
+                        </div>
+                        
+                        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fotoInput').click()">
+                            <div class="upload-placeholder">
+                                <div class="upload-icon">📸</div>
+                                <p style="font-weight: 600; margin-bottom: 8px;">Sube tu foto de outfit</p>
+                                <p class="upload-hint">Haz clic aquí para seleccionar una imagen (JPG, PNG, GIF - máx 5MB)</p>
+                            </div>
+                        </div>
+                        
+                        <input type="file" 
+                               id="fotoInput" 
+                               name="foto" 
+                               accept="image/*" 
+                               style="display: none;" 
+                               required>
+                        
+                        <div class="form-group">
+                            <label for="tituloInput">Título del outfit *</label>
+                            <input type="text" 
+                                   id="tituloInput" 
+                                   name="titulo" 
+                                   placeholder="Ej: Look casual para fin de semana" 
+                                   required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descripcionInput">Descripción</label>
+                            <textarea id="descripcionInput" 
+                                      name="descripcion" 
+                                      placeholder="Cuenta la historia detrás de tu outfit, dónde lo usarías, qué te inspiró..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="etiquetasInput">Etiquetas</label>
+                            <input type="text" 
+                                   id="etiquetasInput" 
+                                   name="etiquetas" 
+                                   placeholder="casual, streetwear, vintage (separado por comas)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ubicacionInput">Ubicación (opcional)</label>
+                            <input type="text" 
+                                   id="ubicacionInput" 
+                                   name="ubicacion" 
+                                   placeholder="¿Dónde tomaste esta foto?">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="resetForm()">Limpiar</button>
+                            <button type="submit" class="btn-primary" id="submitCreateBtn">Publicar outfit</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
 
-            <!-- Trending Section -->
+            <!-- NOTIFICATIONS SECTION -->
+            <section id="notifications" class="content-section">
+                <div class="header">
+                    <h2>Notificaciones</h2>
+                    <p>Mantente al día con tu actividad</p>
+                </div>
+                <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                    <div style="font-size: 64px; margin-bottom: 16px;">🔔</div>
+                    <h3 style="margin-bottom: 8px;">Sin notificaciones nuevas</h3>
+                    <p>Te avisaremos cuando alguien interactúe con tus publicaciones</p>
+                </div>
+            </section>
+
+            <!-- TRENDING SECTION -->
             <section id="trending" class="content-section">
                 <div class="header">
                     <h2>Tendencia</h2>
@@ -1006,7 +1243,7 @@
                 </div>
             </section>
 
-            <!-- Profile Section -->
+            <!-- PROFILE SECTION -->
             <section id="profile" class="content-section">
                 <div class="profile-header">
                     <div class="profile-avatar-large" id="profileAvatarLarge">U</div>
@@ -1052,7 +1289,7 @@
                 </div>
             </section>
 
-            <!-- Config Section -->
+            <!-- CONFIG SECTION -->
             <section id="config" class="content-section">
                 <div class="header">
                     <h2>Configuración</h2>
@@ -1136,6 +1373,7 @@
         let currentUser = null;
         let isLoginMode = true;
         let currentProfileTab = 'posts';
+        let currentPostId = null;
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
@@ -1189,9 +1427,6 @@
                     isLoggedIn = false;
                     currentUser = null;
                     updateUserInterface();
-                    setTimeout(() => {
-                        showLogin();
-                    }, 1000);
                 }
             } catch (error) {
                 console.error('Error checking session:', error);
@@ -1433,7 +1668,7 @@
                     currentUser = data.user;
                     updateUserInterface();
                     closeLogin();
-                    showMessage('¡Bienvenido de vuelta!', 'success');
+                    showToast('¡Bienvenido de vuelta!', 'success');
                     loadFeedPosts();
                 } else {
                     showMessage(data.message, 'error');
@@ -1473,7 +1708,7 @@
                     currentUser = data.user;
                     updateUserInterface();
                     closeLogin();
-                    showMessage('¡Cuenta creada exitosamente!', 'success');
+                    showToast('¡Cuenta creada exitosamente!', 'success');
                     loadFeedPosts();
                 } else {
                     showMessage(data.message, 'error');
@@ -1507,7 +1742,6 @@
                 document.getElementById('userAvatar').textContent = currentUser.avatar;
                 document.getElementById('userName').textContent = currentUser.nombre;
                 document.getElementById('userHandle').textContent = '@' + currentUser.email.split('@')[0];
-                document.getElementById('usuarioIdInput').value = currentUser.id;
             } else {
                 document.getElementById('userInfo').style.display = 'none';
                 document.getElementById('guestInfo').style.display = 'flex';
@@ -1602,6 +1836,11 @@
             const tags = Array.isArray(post.tags) ? post.tags : 
                          (post.tags ? String(post.tags).split(',').map(tag => tag.trim()) : []);
             
+            const likeClass = post.liked_by_user ? 'liked' : '';
+            const saveClass = post.saved_by_user ? 'saved' : '';
+            const likeIcon = post.liked_by_user ? '❤️' : '🤍';
+            const saveIcon = post.saved_by_user ? '🔖' : '📑';
+            
             card.innerHTML = `
                 ${trendingBadge}
                 <img src="${post.image}" alt="${post.title}" class="post-image" 
@@ -1610,16 +1849,24 @@
                     <h3 class="post-title">${post.title}</h3>
                     <div class="post-user">
                         <div class="post-user-avatar">${post.user_avatar}</div>
-                        <span class="post-user-name">${post.user}</span>
+                        <span class="post-user-name">${post.user_name}</span>
                     </div>
                     ${post.description ? `<p class="post-description">${post.description.substring(0, 100)}${post.description.length > 100 ? '...' : ''}</p>` : ''}
                     <div class="post-tags">
                         ${tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
                     </div>
                     <div class="post-stats">
-                        <span onclick="likePost(${post.id})" style="cursor: pointer;">❤️ ${post.likes}</span>
-                        <span onclick="showLoginIfNeeded()">💬 ${post.comments}</span>
-                        <span onclick="showLoginIfNeeded()">🔖</span>
+                        <button class="stat-button ${likeClass}" onclick="likePost(${post.id}, event)">
+                            <span class="icon">${likeIcon}</span>
+                            <span class="count">${post.likes}</span>
+                        </button>
+                        <button class="stat-button" onclick="openCommentsModal(${post.id})">
+                            <span class="icon">💬</span>
+                            <span class="count">${post.comments}</span>
+                        </button>
+                        <button class="stat-button ${saveClass}" onclick="savePost(${post.id}, event)">
+                            <span class="icon">${saveIcon}</span>
+                        </button>
                     </div>
                 </div>
             `;
@@ -1627,317 +1874,448 @@
             return card;
         }
 
-        function setupCreateForm() {
-    const uploadArea = document.querySelector('.upload-area');
-    const fileInput = document.getElementById('foto');
-    const createForm = document.getElementById('createOutfitForm');
-    
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                handleFileSelect(e.target.files[0]);
-            }
-        });
-    }
-    
-    if (uploadArea) {
-        uploadArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.style.borderColor = '#1976d2';
-            this.style.backgroundColor = 'rgba(25, 118, 210, 0.05)';
-        });
-        
-        uploadArea.addEventListener('dragleave', function() {
-            this.style.borderColor = 'var(--border-color)';
-            this.style.backgroundColor = 'var(--bg-secondary)';
-        });
-        
-        uploadArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.style.borderColor = 'var(--border-color)';
-            this.style.backgroundColor = 'var(--bg-secondary)';
+        // FUNCIONES DE INTERACCIÓN (LIKES, COMENTARIOS, GUARDAR)
+        async function likePost(postId, event) {
+            if (!showLoginIfNeeded()) return;
             
-            const files = e.dataTransfer.files;
-            if (files.length > 0 && fileInput) {
-                fileInput.files = files;
-                handleFileSelect(files[0]);
-            }
-        });
-    }
-    
-    // Validar antes de enviar
-    if (createForm) {
-        createForm.addEventListener('submit', function(e) {
-            const foto = document.getElementById('foto');
-            const titulo = document.getElementById('titulo');
+            event.stopPropagation();
+            const button = event.currentTarget;
             
-            if (!foto.files || foto.files.length === 0) {
-                e.preventDefault();
-                alert('Por favor selecciona una imagen para tu outfit');
-                return false;
+            try {
+                const formData = new FormData();
+                formData.append('action', 'like');
+                formData.append('post_id', postId);
+                
+                const response = await fetch('api_interacciones.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const icon = button.querySelector('.icon');
+                    const count = button.querySelector('.count');
+                    
+                    if (data.action === 'liked') {
+                        button.classList.add('liked');
+                        icon.textContent = '❤️';
+                    } else {
+                        button.classList.remove('liked');
+                        icon.textContent = '🤍';
+                    }
+                    
+                    count.textContent = data.total_likes;
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error al procesar like', 'error');
             }
-            
-            if (!titulo.value.trim()) {
-                e.preventDefault();
-                alert('Por favor agrega un título a tu outfit');
-                return false;
-            }
-            
-            // Mostrar loading
-            const submitBtn = createForm.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Publicando...';
-            }
-        });
-    }
-}
+        }
 
-function handleFileSelect(file) {
-    const uploadArea = document.querySelector('.upload-area');
-    if (!uploadArea) return;
-    
-    if (!file.type.startsWith('image/')) {
-        alert('Por favor selecciona una imagen válida');
-        document.getElementById('foto').value = '';
-        return;
-    }
-    
-    if (file.size > 5000000) {
-        alert('La imagen es demasiado grande (máximo 5MB)');
-        document.getElementById('foto').value = '';
-        return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        uploadArea.innerHTML = `
-            <div style="position: relative; max-width: 100%; max-height: 300px;">
-                <img src="${e.target.result}" alt="Preview" 
-                     style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
-                <div style="margin-top: 16px; text-align: center;">
-                    <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">✓ Imagen seleccionada</p>
-                    <p style="font-size: 14px; color: var(--text-secondary);">${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>
-                    <p class="upload-hint" style="margin-top: 8px;">Haz clic para cambiar la imagen</p>
+        async function savePost(postId, event) {
+            if (!showLoginIfNeeded()) return;
+            
+            event.stopPropagation();
+            const button = event.currentTarget;
+            
+            try {
+                const formData = new FormData();
+                formData.append('action', 'save');
+                formData.append('post_id', postId);
+                
+                const response = await fetch('api_interacciones.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const icon = button.querySelector('.icon');
+                    
+                    if (data.action === 'saved') {
+                        button.classList.add('saved');
+                        icon.textContent = '🔖';
+                    } else {
+                        button.classList.remove('saved');
+                        icon.textContent = '📑';
+                    }
+                    
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error al guardar publicación', 'error');
+            }
+        }
+
+        async function openCommentsModal(postId) {
+            if (!showLoginIfNeeded()) return;
+            
+            currentPostId = postId;
+            const modal = document.getElementById('commentsModal');
+            modal.classList.add('active');
+            
+            await loadComments(postId);
+        }
+
+        function closeCommentsModal() {
+            const modal = document.getElementById('commentsModal');
+            modal.classList.remove('active');
+            document.getElementById('commentInput').value = '';
+            currentPostId = null;
+        }
+
+        async function loadComments(postId) {
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = '<div class="no-comments">Cargando comentarios...</div>';
+            
+            try {
+                const response = await fetch(`api_interacciones.php?action=get_comments&post_id=${postId}`);
+                const comments = await response.json();
+                
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<div class="no-comments">No hay comentarios aún. ¡Sé el primero en comentar!</div>';
+                    return;
+                }
+                
+                commentsList.innerHTML = '';
+                comments.forEach(comment => {
+                    commentsList.appendChild(createCommentElement(comment));
+                });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                commentsList.innerHTML = '<div class="no-comments">Error al cargar comentarios</div>';
+            }
+        }
+
+        function createCommentElement(comment) {
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+            div.id = `comment-${comment.id}`;
+            
+            const timeAgo = formatTimeAgo(comment.fecha);
+            
+            div.innerHTML = `
+                <div class="comment-avatar">${comment.user_avatar}</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.user_name}</span>
+                        <span class="comment-time">${timeAgo}</span>
+                    </div>
+                    <p class="comment-text">${comment.comentario}</p>
+                    ${comment.is_owner ? `<button class="comment-delete" onclick="deleteComment(${comment.id})">Eliminar</button>` : ''}
                 </div>
-            </div>
-        `;
-    };
-    reader.readAsDataURL(file);
-}
+            `;
+            
+            return div;
+        }
+
+        async function submitComment() {
+            const input = document.getElementById('commentInput');
+            const comentario = input.value.trim();
+            
+            if (!comentario) {
+                showToast('Escribe un comentario', 'error');
+                return;
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('action', 'comment');
+                formData.append('post_id', currentPostId);
+                formData.append('comentario', comentario);
+                
+                const response = await fetch('api_interacciones.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    input.value = '';
+                    const commentsList = document.getElementById('commentsList');
+                    
+                    if (commentsList.querySelector('.no-comments')) {
+                        commentsList.innerHTML = '';
+                    }
+                    
+                    commentsList.insertBefore(createCommentElement(data.comment), commentsList.firstChild);
+                    
+                    // Actualizar contador en la tarjeta
+                    updateCommentCount(currentPostId, 1);
+                    
+                    showToast('Comentario agregado', 'success');
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error al agregar comentario', 'error');
+            }
+        }
+
+        async function deleteComment(commentId) {
+            if (!confirm('¿Eliminar este comentario?')) return;
+            
+            try {
+                const formData = new FormData();
+                formData.append('action', 'delete_comment');
+                formData.append('comment_id', commentId);
+                
+                const response = await fetch('api_interacciones.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const commentElement = document.getElementById(`comment-${commentId}`);
+                    if (commentElement) {
+                        commentElement.remove();
+                    }
+                    
+                    const commentsList = document.getElementById('commentsList');
+                    if (commentsList.children.length === 0) {
+                        commentsList.innerHTML = '<div class="no-comments">No hay comentarios aún.</div>';
+                    }
+                    
+                    // Actualizar contador en la tarjeta
+                    updateCommentCount(currentPostId, -1);
+                    
+                    showToast('Comentario eliminado', 'success');
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error al eliminar comentario', 'error');
+            }
+        }
+
+        function updateCommentCount(postId, increment) {
+            const allCards = document.querySelectorAll('.post-card');
+            allCards.forEach(card => {
+                const commentButton = card.querySelector('.stat-button:nth-child(2)');
+                if (commentButton) {
+                    const countSpan = commentButton.querySelector('.count');
+                    if (countSpan) {
+                        let currentCount = parseInt(countSpan.textContent) || 0;
+                        countSpan.textContent = Math.max(0, currentCount + increment);
+                    }
+                }
+            });
+        }
+
+        function formatTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            
+            if (seconds < 60) return 'Ahora';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)}d`;
+            return date.toLocaleDateString();
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span>${type === 'success' ? '✓' : '✕'}</span>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // FORMULARIO DE CREAR PUBLICACIÓN
+        function setupCreateForm() {
+            const uploadArea = document.querySelector('.upload-area');
+            const fileInput = document.getElementById('fotoInput');
+            const createForm = document.getElementById('createOutfitForm');
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    if (e.target.files.length > 0) {
+                        handleFileSelect(e.target.files[0]);
+                    }
+                });
+            }
+            
+            if (uploadArea) {
+                uploadArea.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = '#1976d2';
+                    this.style.backgroundColor = 'rgba(25, 118, 210, 0.05)';
+                });
+                
+                uploadArea.addEventListener('dragleave', function() {
+                    this.style.borderColor = 'var(--border-color)';
+                    this.style.backgroundColor = 'var(--bg-secondary)';
+                });
+                
+                uploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = 'var(--border-color)';
+                    this.style.backgroundColor = 'var(--bg-secondary)';
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0 && fileInput) {
+                        fileInput.files = files;
+                        handleFileSelect(files[0]);
+                    }
+                });
+            }
+            
+            if (createForm) {
+                createForm.addEventListener('submit', function(e) {
+                    const foto = document.getElementById('fotoInput');
+                    const titulo = document.getElementById('tituloInput');
+                    
+                    if (!foto.files || foto.files.length === 0) {
+                        e.preventDefault();
+                        alert('Por favor selecciona una imagen para tu outfit');
+                        return false;
+                    }
+                    
+                    if (!titulo.value.trim()) {
+                        e.preventDefault();
+                        alert('Por favor agrega un título a tu outfit');
+                        return false;
+                    }
+                    
+                    const submitBtn = createForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Publicando...';
+                    }
+                });
+            }
+        }
+
         function handleFileSelect(file) {
             const uploadArea = document.querySelector('.upload-area');
             if (!uploadArea) return;
             
             if (!file.type.startsWith('image/')) {
                 alert('Por favor selecciona una imagen válida');
+                document.getElementById('fotoInput').value = '';
                 return;
             }
             
             if (file.size > 5000000) {
                 alert('La imagen es demasiado grande (máximo 5MB)');
+                document.getElementById('fotoInput').value = '';
                 return;
             }
             
             const reader = new FileReader();
             reader.onload = function(e) {
                 uploadArea.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview" 
-                         style="max-width: 100%; max-height: 200px; border-radius: 8px; object-fit: cover;">
-                    <p style="margin-top: 12px; font-weight: 500;">Imagen seleccionada: ${file.name}</p>
-                    <p class="upload-hint">Haz clic para cambiar la imagen</p>
+                    <div style="position: relative; max-width: 100%; max-height: 300px;">
+                        <img src="${e.target.result}" alt="Preview" 
+                             style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
+                        <div style="margin-top: 16px; text-align: center;">
+                            <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">✓ Imagen seleccionada</p>
+                            <p style="font-size: 14px; color: var(--text-secondary);">${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>
+                            <p class="upload-hint" style="margin-top: 8px;">Haz clic para cambiar la imagen</p>
+                        </div>
+                    </div>
                 `;
             };
             reader.readAsDataURL(file);
         }
 
-    async function likePost(postId, event) {
-    if (!showLoginIfNeeded()) return;
-    
-    event.stopPropagation();
-    
-    try {
-        const formData = new FormData();
-        formData.append('post_id', postId);
-        
-        const response = await fetch('api_posts.php?action=like', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            const heartSpan = event.currentTarget;
-            
-            if (data.action === 'liked') {
-                heartSpan.style.color = '#e91e63';
-                heartSpan.innerHTML = '❤️ ' + data.total_likes;
-            } else {
-                heartSpan.style.color = 'var(--text-secondary)';
-                heartSpan.innerHTML = '🤍 ' + data.total_likes;
+        function resetForm() {
+            document.getElementById('createOutfitForm').reset();
+            const uploadArea = document.querySelector('.upload-area');
+            if (uploadArea) {
+                uploadArea.innerHTML = `
+                    <div class="upload-placeholder">
+                        <div class="upload-icon">📸</div>
+                        <p style="font-weight: 600; margin-bottom: 8px;">Sube tu foto de outfit</p>
+                        <p class="upload-hint">Haz clic aquí para seleccionar una imagen (JPG, PNG, GIF - máx 5MB)</p>
+                    </div>
+                `;
             }
-        } else {
-            showMessage(data.message || 'Error al dar like', 'error');
         }
-    } catch (error) {
-        console.error('Error:', error);
-        showMessage('Error al procesar like', 'error');
-    }
-}
 
-function createPostCard(post, isTrending = false) {
-    const card = document.createElement('div');
-    card.className = 'post-card';
-    
-    const trendingBadge = isTrending ? 
-        '<div style="background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 8px; text-align: center;">🔥 Trending</div>' : '';
-    
-    const tags = Array.isArray(post.tags) ? post.tags : 
-                 (post.tags ? String(post.tags).split(',').map(tag => tag.trim()) : []);
-    
-    const likedClass = post.liked_by_user ? 'style="color: #e91e63;"' : '';
-    const likeIcon = post.liked_by_user ? '❤️' : '🤍';
-    
-    card.innerHTML = `
-        ${trendingBadge}
-        <img src="${post.image}" alt="${post.title}" class="post-image" 
-             onerror="this.src='https://via.placeholder.com/300x400/f1f3f4/767676?text=Imagen+no+disponible'">
-        <div class="post-content">
-            <h3 class="post-title">${post.title}</h3>
-            <div class="post-user">
-                <div class="post-user-avatar">${post.user_avatar}</div>
-                <span class="post-user-name">${post.user}</span>
-            </div>
-            ${post.description ? `<p class="post-description">${post.description.substring(0, 100)}${post.description.length > 100 ? '...' : ''}</p>` : ''}
-            <div class="post-tags">
-                ${tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
-            </div>
-            <div class="post-stats">
-                <span onclick="likePost(${post.id}, event)" ${likedClass}>${likeIcon} ${post.likes}</span>
-                <span onclick="showLoginIfNeeded()">💬 ${post.comments}</span>
-                <span onclick="showLoginIfNeeded()">🔖</span>
-            </div>
-        </div>
-    `;
-    
-    return card;
-}
+        // BÚSQUEDA
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const posts = document.querySelectorAll('.post-card');
+            
+            posts.forEach(post => {
+                const title = post.querySelector('.post-title').textContent.toLowerCase();
+                const tags = Array.from(post.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
+                const description = post.querySelector('.post-description');
+                const descText = description ? description.textContent.toLowerCase() : '';
+                
+                if (title.includes(searchTerm) || 
+                    tags.some(tag => tag.includes(searchTerm)) || 
+                    descText.includes(searchTerm)) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
 
-function saveDraft() {
-    if (!showLoginIfNeeded()) return;
-    alert('Función de guardar borrador en desarrollo');
-}
+        // Cerrar modales al hacer clic fuera
+        document.getElementById('commentsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCommentsModal();
+            }
+        });
 
-document.getElementById('searchInput').addEventListener('input', function(e) {
-    const searchTerm = e.target.value.toLowerCase();
-    const posts = document.querySelectorAll('.post-card');
-    
-    posts.forEach(post => {
-        const title = post.querySelector('.post-title').textContent.toLowerCase();
-        const tags = Array.from(post.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
-        const description = post.querySelector('.post-description');
-        const descText = description ? description.textContent.toLowerCase() : '';
-        
-        if (title.includes(searchTerm) || 
-            tags.some(tag => tag.includes(searchTerm)) || 
-            descText.includes(searchTerm)) {
-            post.style.display = 'block';
-        } else {
-            post.style.display = 'none';
-        }
-    });
-});
+        document.getElementById('loginOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLogin();
+            }
+        });
 
-document.getElementById('loginOverlay').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeLogin();
-    }
-});
+        // Permitir enviar comentario con Enter
+        document.getElementById('commentInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitComment();
+            }
+        });
 
-window.showLogin = showLogin;
-window.closeLogin = closeLogin;
-window.toggleForm = toggleForm;
-window.logout = logout;
-window.showLoginIfNeeded = showLoginIfNeeded;
-window.likePost = likePost;
-window.saveDraft = saveDraft;
-window.loadFeedPosts = loadFeedPosts;
-window.showProfile = showProfile;
-window.switchProfileTab = switchProfileTab;
-window.toggleDarkMode = toggleDarkMode;
-window.toggleSetting = toggleSetting;
-window.showEditProfile = showEditProfile;
-window.changePassword = changePassword;
+        // Exportar funciones globales
+        window.showLogin = showLogin;
+        window.closeLogin = closeLogin;
+        window.toggleForm = toggleForm;
+        window.logout = logout;
+        window.showLoginIfNeeded = showLoginIfNeeded;
+        window.likePost = likePost;
+        window.savePost = savePost;
+        window.openCommentsModal = openCommentsModal;
+        window.closeCommentsModal = closeCommentsModal;
+        window.submitComment = submitComment;
+        window.deleteComment = deleteComment;
+        window.loadFeedPosts = loadFeedPosts;
+        window.showProfile = showProfile;
+        window.switchProfileTab = switchProfileTab;
+        window.toggleDarkMode = toggleDarkMode;
+        window.toggleSetting = toggleSetting;
+        window.showEditProfile = showEditProfile;
+        window.changePassword = changePassword;
+        window.resetForm = resetForm;
     </script>
-    <script>
-document.getElementById('fotoInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    
-    if (!file) {
-        return;
-    }
-    
-    // Validar que sea imagen
-    if (!file.type.startsWith('image/')) {
-        alert('Por favor selecciona una imagen válida (JPG, PNG, GIF)');
-        this.value = '';
-        return;
-    }
-    
-    // Validar tamaño (5MB máximo)
-    if (file.size > 5 * 1024 * 1024) {
-        alert('La imagen es muy grande. Máximo 5MB permitidos.');
-        this.value = '';
-        return;
-    }
-    
-    // Mostrar preview
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        document.getElementById('imagePreview').src = event.target.result;
-        document.getElementById('imagePreviewContainer').style.display = 'block';
-        document.getElementById('uploadArea').style.display = 'none';
-        document.getElementById('fileName').textContent = file.name;
-        document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
-    };
-    reader.readAsDataURL(file);
-});
-
-// Validar antes de enviar
-document.getElementById('createOutfitForm').addEventListener('submit', function(e) {
-    const fotoInput = document.getElementById('fotoInput');
-    const tituloInput = document.getElementById('tituloInput');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    // Verificar que haya archivo
-    if (!fotoInput.files || fotoInput.files.length === 0) {
-        e.preventDefault();
-        alert('Por favor selecciona una imagen para tu outfit');
-        return false;
-    }
-    
-    // Verificar título
-    if (!tituloInput.value.trim()) {
-        e.preventDefault();
-        alert('Por favor agrega un título a tu outfit');
-        tituloInput.focus();
-        return false;
-    }
-    
-    // Deshabilitar botón y mostrar loading
-    submitBtn.disabled = true;
-    submitBtn.textContent = '⏳ Publicando...';
-    submitBtn.style.opacity = '0.7';
-    
-    return true;
-});
-
-function resetForm() {
-    document.getElementById('createOutfitForm').reset();
-    document.getElementById('imagePreviewContainer').style.display = 'none';
-    document.getElementById('uploadArea').style.display = 'block';
-}
-</script>
 </body>
 </html>

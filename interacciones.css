@@ -1,0 +1,364 @@
+/* Animaciones mejoradas para botones de interacción */
+.stat-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(233, 30, 99, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.stat-button:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+/* Animación de corazón al dar like */
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.3); }
+    50% { transform: scale(1.1); }
+    75% { transform: scale(1.25); }
+}
+
+.stat-button.liked .icon {
+    animation: heartBeat 0.5s ease;
+    color: #e91e63;
+}
+
+/* Animación de guardado */
+@keyframes bookmarkSave {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.2); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+.stat-button.saved .icon {
+    animation: bookmarkSave 0.4s ease;
+    color: #ffd700;
+}
+
+/* Hover mejorado para botones */
+.stat-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-button:hover {
+    transform: translateY(-2px);
+}
+
+.stat-button:hover .icon {
+    transform: scale(1.15);
+}
+
+/* Modal de comentarios - Animación de entrada */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.comments-modal.active {
+    animation: modalFadeIn 0.3s ease;
+}
+
+.comments-modal.active .comments-modal-content {
+    animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scroll suave para lista de comentarios */
+.comments-list {
+    scroll-behavior: smooth;
+}
+
+.comments-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.comments-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Efecto de escritura en input de comentarios */
+.comments-form input:focus {
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Animación de botón de enviar */
+.comments-form button {
+    position: relative;
+    overflow: hidden;
+}
+
+.comments-form button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.comments-form button:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* Badge de contador animado */
+@keyframes countUp {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.stat-button .count {
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.stat-button.liked .count,
+.stat-button.saved .count {
+    animation: countUp 0.4s ease;
+}
+
+/* Comentario nuevo - Destaque */
+.comment-item:first-child {
+    background: linear-gradient(90deg, 
+        rgba(233, 30, 99, 0.05) 0%, 
+        transparent 100%);
+    padding: 12px;
+    border-radius: 8px;
+    margin: -12px;
+    margin-bottom: 8px;
+}
+
+/* Efecto hover en comentarios */
+.comment-item {
+    transition: background-color 0.2s ease;
+    padding: 8px;
+    margin: -8px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+}
+
+.comment-item:hover {
+    background-color: var(--hover-bg);
+}
+
+/* Botón de eliminar comentario mejorado */
+.comment-delete {
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.2s ease;
+}
+
+.comment-item:hover .comment-delete {
+    opacity: 1;
+}
+
+/* Loading spinner personalizado */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+/* Post card hover mejorado */
+.post-card {
+    position: relative;
+}
+
+.post-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(0, 0, 0, 0.02) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: 16px;
+}
+
+.post-card:hover::after {
+    opacity: 1;
+}
+
+/* Imagen del post con efecto zoom suave */
+.post-image {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.post-card:hover .post-image {
+    transform: scale(1.02);
+}
+
+/* Tags con hover mejorado */
+.tag {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Toast mejorado con sombra */
+.toast {
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.toast::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, 
+        var(--accent-color) 0%, 
+        rgba(233, 30, 99, 0.5) 100%);
+}
+
+/* Responsive mejorado */
+@media (max-width: 768px) {
+    .stat-button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .stat-button .icon {
+        font-size: 16px;
+    }
+    
+    .comments-modal-content {
+        border-radius: 16px 16px 0 0;
+        margin-top: auto;
+    }
+}
+
+/* Dark mode ajustes */
+[data-theme="dark"] .stat-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .comments-form input {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .comments-form input:focus {
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+}
+
+[data-theme="dark"] .toast {
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Efecto de carga para imágenes */
+.post-image {
+    background: linear-gradient(
+        90deg,
+        var(--bg-secondary) 0%,
+        var(--hover-bg) 50%,
+        var(--bg-secondary) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.post-image[src] {
+    animation: none;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Pulse para notificaciones nuevas */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.stat-button.new-notification {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Efecto de confetti cuando se guarda (opcional) */
+@keyframes confetti {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.stat-button.saved::after {
+    content: '✨';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    animation: confetti 1s ease-out forwards;
+}

@@ -15,26 +15,22 @@ switch($action) {
         getFeedPosts($conexion, $usuario_id);
         break;
     case 'explore':
-        getExplorePosts($conexion);
+        getExplorePosts($conexion, $usuario_id);
         break;
     case 'trending':
-        getTrendingPosts($conexion);
+        getTrendingPosts($conexion, $usuario_id);
         break;
     case 'user':
-        getUserPosts($conexion, $_GET['user_id'] ?? $usuario_id);
+        getUserPosts($conexion, $_GET['user_id'] ?? $usuario_id, $usuario_id);
         break;
     case 'saved':
         getSavedPosts($conexion, $usuario_id);
-        break;
-    case 'like':
-        handleLike($conexion, $usuario_id);
         break;
     default:
         echo json_encode(['error' => 'Acción no válida']);
 }
 
 function getFeedPosts($conexion, $usuario_id) {
-    // Obtener publicaciones reales de la BD
     $sql = "SELECT p.*, u.nombre, u.apellido, u.foto as user_foto,
             (SELECT COUNT(*) FROM likes WHERE id_publicacion = p.id_publicaciones) as total_likes,
             (SELECT COUNT(*) FROM comentarios WHERE id_publicacion = p.id_publicaciones) as total_comentarios
@@ -59,8 +55,7 @@ function getFeedPosts($conexion, $usuario_id) {
     echo json_encode($posts);
 }
 
-function getExplorePosts($conexion) {
-    // Similar a feed pero aleatorio
+function getExplorePosts($conexion, $usuario_id) {
     $sql = "SELECT p.*, u.nombre, u.apellido, u.foto as user_foto,
             (SELECT COUNT(*) FROM likes WHERE id_publicacion = p.id_publicaciones) as total_likes,
             (SELECT COUNT(*) FROM comentarios WHERE id_publicacion = p.id_publicaciones) as total_comentarios
@@ -74,14 +69,13 @@ function getExplorePosts($conexion) {
     $posts = [];
     
     while ($row = mysqli_fetch_assoc($resultado)) {
-        $posts[] = formatPost($row, $_SESSION['usuario_id'] ?? null, $conexion);
+        $posts[] = formatPost($row, $usuario_id, $conexion);
     }
     
     echo json_encode($posts);
 }
 
-function getTrendingPosts($conexion) {
-    // Posts ordenados por likes
+function getTrendingPosts($conexion, $usuario_id) {
     $sql = "SELECT p.*, u.nombre, u.apellido, u.foto as user_foto,
             (SELECT COUNT(*) FROM likes WHERE id_publicacion = p.id_publicaciones) as total_likes,
             (SELECT COUNT(*) FROM comentarios WHERE id_publicacion = p.id_publicaciones) as total_comentarios
@@ -95,13 +89,13 @@ function getTrendingPosts($conexion) {
     $posts = [];
     
     while ($row = mysqli_fetch_assoc($resultado)) {
-        $posts[] = formatPost($row, $_SESSION['usuario_id'] ?? null, $conexion);
+        $posts[] = formatPost($row, $usuario_id, $conexion);
     }
     
     echo json_encode($posts);
 }
 
-function getUserPosts($conexion, $user_id) {
+function getUserPosts($conexion, $user_id, $current_user_id) {
     if (!$user_id) {
         echo json_encode([]);
         return;
@@ -122,7 +116,7 @@ function getUserPosts($conexion, $user_id) {
     
     $posts = [];
     while ($row = $resultado->fetch_assoc()) {
-        $posts[] = formatPost($row, $_SESSION['usuario_id'] ?? null, $conexion);
+        $posts[] = formatPost($row, $current_user_id, $conexion);
     }
     
     echo json_encode($posts);
@@ -158,73 +152,30 @@ function getSavedPosts($conexion, $usuario_id) {
     $stmt->close();
 }
 
-function handleLike($conexion, $usuario_id) {
-    if (!$usuario_id) {
-        echo json_encode(['success' => false, 'message' => 'Debes iniciar sesión']);
-        return;
-    }
-    
-    $post_id = $_POST['post_id'] ?? 0;
-    
-    if (!$post_id) {
-        echo json_encode(['success' => false, 'message' => 'ID de publicación inválido']);
-        return;
-    }
-    
-    // Verificar si ya dio like
-    $check_sql = "SELECT id_like FROM likes WHERE id_usuario = ? AND id_publicacion = ?";
-    $stmt = $conexion->prepare($check_sql);
-    $stmt->bind_param("ii", $usuario_id, $post_id);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    
-    if ($resultado->num_rows > 0) {
-        // Ya dio like, entonces quitar
-        $delete_sql = "DELETE FROM likes WHERE id_usuario = ? AND id_publicacion = ?";
-        $stmt = $conexion->prepare($delete_sql);
-        $stmt->bind_param("ii", $usuario_id, $post_id);
-        $stmt->execute();
-        
-        $action = 'unliked';
-    } else {
-        // No ha dado like, entonces agregar
-        $insert_sql = "INSERT INTO likes (id_usuario, id_publicacion) VALUES (?, ?)";
-        $stmt = $conexion->prepare($insert_sql);
-        $stmt->bind_param("ii", $usuario_id, $post_id);
-        $stmt->execute();
-        
-        $action = 'liked';
-    }
-    
-    // Obtener total de likes actualizado
-    $count_sql = "SELECT COUNT(*) as total FROM likes WHERE id_publicacion = ?";
-    $stmt = $conexion->prepare($count_sql);
-    $stmt->bind_param("i", $post_id);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $row = $resultado->fetch_assoc();
-    
-    echo json_encode([
-        'success' => true,
-        'action' => $action,
-        'total_likes' => $row['total']
-    ]);
-    
-    $stmt->close();
-}
-
 function formatPost($row, $usuario_id, $conexion) {
     $username = strtolower(str_replace(' ', '', $row['nombre']));
     
     // Verificar si el usuario actual dio like
     $liked_by_user = false;
+    $saved_by_user = false;
+    
     if ($usuario_id) {
+        // Check like
         $check_sql = "SELECT id_like FROM likes WHERE id_usuario = ? AND id_publicacion = ?";
         $stmt = $conexion->prepare($check_sql);
         $stmt->bind_param("ii", $usuario_id, $row['id_publicaciones']);
         $stmt->execute();
         $resultado = $stmt->get_result();
         $liked_by_user = $resultado->num_rows > 0;
+        $stmt->close();
+        
+        // Check saved
+        $check_sql = "SELECT id_guardado FROM guardados WHERE id_usuario = ? AND id_publicacion = ?";
+        $stmt = $conexion->prepare($check_sql);
+        $stmt->bind_param("ii", $usuario_id, $row['id_publicaciones']);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $saved_by_user = $resultado->num_rows > 0;
         $stmt->close();
     }
     
@@ -241,7 +192,8 @@ function formatPost($row, $usuario_id, $conexion) {
         'likes' => (int)($row['total_likes'] ?? 0),
         'comments' => (int)($row['total_comentarios'] ?? 0),
         'created_at' => $row['fecha_creacion'],
-        'liked_by_user' => $liked_by_user
+        'liked_by_user' => $liked_by_user,
+        'saved_by_user' => $saved_by_user
     ];
 }
 
