@@ -1319,20 +1319,22 @@
                                 <span class="settings-label-title">Perfil Público</span>
                                 <span class="settings-label-desc">Permite que otros usuarios vean tu perfil</span>
                             </div>
-                            <div class="toggle-switch active" id="publicProfileToggle" onclick="toggleSetting(this)">
+                            <div class="toggle-switch active" id="publicProfileToggle" onclick="toggleSettingAndSave(this, 'perfil_publico')">
                                 <div class="toggle-slider"></div>
                             </div>
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">
                                 <span class="settings-label-title">Permitir Comentarios</span>
-                                <span class="settings-label-desc">Los usuarios pueden comentar tus publicaciones</span>
+                                <span class="settings-label-desc">
+                                    Los usuarios pueden comentar tus publicaciones
+                                    <span id="commentsStatus" style="font-weight: 600; color: var(--accent-color);"></span>
+                                </span>
                             </div>
-                            <div class="toggle-switch active" id="commentsToggle" onclick="toggleSetting(this)">
+                            <div class="toggle-switch active" id="commentsToggle" onclick="toggleSettingAndSave(this, 'permitir_comentarios')">
                                 <div class="toggle-slider"></div>
                             </div>
                         </div>
-                    </div>
 
                     <!-- Notificaciones -->
                     <div class="settings-card">
@@ -1342,7 +1344,7 @@
                                 <span class="settings-label-title">Notificaciones por Email</span>
                                 <span class="settings-label-desc">Recibe notificaciones en tu correo</span>
                             </div>
-                            <div class="toggle-switch active" id="emailNotificationsToggle" onclick="toggleSetting(this)">
+                            <div class="toggle-switch active" id="emailNotificationsToggle" onclick="toggleSettingAndSave(this, 'notificaciones_email')">
                                 <div class="toggle-slider"></div>
                             </div>
                         </div>
@@ -1351,7 +1353,7 @@
                                 <span class="settings-label-title">Notificaciones Push</span>
                                 <span class="settings-label-desc">Recibe notificaciones en tiempo real</span>
                             </div>
-                            <div class="toggle-switch active" id="pushNotificationsToggle" onclick="toggleSetting(this)">
+                            <div class="toggle-switch active" id="pushNotificationsToggle" onclick="toggleSettingAndSave(this, 'notificaciones_push')">
                                 <div class="toggle-slider"></div>
                             </div>
                         </div>
@@ -2276,7 +2278,7 @@
             });
         });
 
-        // Cerrar modales al hacer clic fuera
+        
         document.getElementById('commentsModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeCommentsModal();
@@ -2289,14 +2291,14 @@
             }
         });
 
-        // Permitir enviar comentario con Enter
+        
         document.getElementById('commentInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 submitComment();
             }
         });
 
-        // Exportar funciones globales
+        
         window.showLogin = showLogin;
         window.closeLogin = closeLogin;
         window.toggleForm = toggleForm;
@@ -2317,5 +2319,380 @@
         window.changePassword = changePassword;
         window.resetForm = resetForm;
     </script>
+ 
+
+
+<div class="config-modal" id="editProfileModal">
+    <div class="config-modal-content">
+        <div class="config-modal-header">
+            <h3>Editar Perfil</h3>
+            <button class="close-modal" onclick="closeEditProfile()">&times;</button>
+        </div>
+        <div class="config-modal-body">
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editNombre">Nombre *</label>
+                    <input type="text" id="editNombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="editApellido">Apellido *</label>
+                    <input type="text" id="editApellido" name="apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Biografía</label>
+                    <textarea id="editBio" name="bio" rows="4" placeholder="Cuéntanos sobre ti..."></textarea>
+                </div>
+                <div class="config-modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeEditProfile()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Cambiar Contraseña -->
+<div class="config-modal" id="changePasswordModal">
+    <div class="config-modal-content">
+        <div class="config-modal-header">
+            <h3>Cambiar Contraseña</h3>
+            <button class="close-modal" onclick="closeChangePassword()">&times;</button>
+        </div>
+        <div class="config-modal-body">
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="passwordActual">Contraseña Actual *</label>
+                    <input type="password" id="passwordActual" name="password_actual" required>
+                </div>
+                <div class="form-group">
+                    <label for="passwordNueva">Contraseña Nueva *</label>
+                    <input type="password" id="passwordNueva" name="password_nueva" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirmar">Confirmar Contraseña Nueva *</label>
+                    <input type="password" id="passwordConfirmar" name="password_confirmar" required minlength="6">
+                </div>
+                <div class="config-modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeChangePassword()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Cambiar Contraseña</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+/* ESTILOS PARA MODALES DE CONFIGURACIÓN */
+.config-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+}
+
+.config-modal.active {
+    display: flex;
+}
+
+.config-modal-content {
+    background: var(--card-bg);
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.config-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.config-modal-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-modal:hover {
+    background-color: var(--hover-bg);
+}
+
+.config-modal-body {
+    padding: 20px;
+}
+
+.config-modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+</style>
+
+<script>
+
+async function loadUserConfig() {
+    if (!currentUser) return;
+    
+    try {
+        const response = await fetch('api_configuraciones.php?action=get_config');
+        const data = await response.json();
+        
+        if (data.success) {
+            const config = data.config;
+            
+            
+            document.getElementById('publicProfileToggle').classList.toggle('active', config.perfil_publico);
+            document.getElementById('commentsToggle').classList.toggle('active', config.permitir_comentarios);
+            document.getElementById('emailNotificationsToggle').classList.toggle('active', config.notificaciones_email);
+            document.getElementById('pushNotificationsToggle').classList.toggle('active', config.notificaciones_push);
+            
+            
+            const commentsStatus = document.getElementById('commentsStatus');
+            if (commentsStatus) {
+                commentsStatus.textContent = config.permitir_comentarios ? ' (Activado)' : ' (Desactivado)';
+                commentsStatus.style.color = config.permitir_comentarios ? '#38a169' : '#e53e3e';
+            }
+        }
+    } catch (error) {
+        console.error('Error cargando configuraciones:', error);
+    }
+}
+
+async function toggleSettingAndSave(element, settingName) {
+    element.classList.toggle('active');
+    
+    if (!currentUser) return;
+    
+    try {
+        const formData = new FormData();
+        formData.append('action', 'update_config');
+        formData.append('perfil_publico', document.getElementById('publicProfileToggle').classList.contains('active') ? 1 : 0);
+        formData.append('permitir_comentarios', document.getElementById('commentsToggle').classList.contains('active') ? 1 : 0);
+        formData.append('notificaciones_email', document.getElementById('emailNotificationsToggle').classList.contains('active') ? 1 : 0);
+        formData.append('notificaciones_push', document.getElementById('pushNotificationsToggle').classList.contains('active') ? 1 : 0);
+        
+        const response = await fetch('api_configuraciones.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showToast(data.message, 'success');
+        } else {
+            
+            element.classList.toggle('active');
+            showToast(data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        element.classList.toggle('active');
+        showToast('Error al actualizar configuración', 'error');
+    }
+}
+
+
+function showEditProfile() {
+    if (!showLoginIfNeeded()) return;
+    
+    
+    document.getElementById('editNombre').value = currentUser.nombre || '';
+    document.getElementById('editApellido').value = currentUser.apellido || '';
+    document.getElementById('editBio').value = ''; 
+    
+    document.getElementById('editProfileModal').classList.add('active');
+}
+
+
+function closeEditProfile() {
+    document.getElementById('editProfileModal').classList.remove('active');
+    document.getElementById('editProfileForm').reset();
+}
+
+
+document.getElementById('editProfileForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Guardando...';
+    
+    try {
+        const formData = new FormData(this);
+        formData.append('action', 'update_profile');
+        
+        const response = await fetch('api_configuraciones.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            
+            currentUser.nombre = data.user.nombre;
+            currentUser.apellido = data.user.apellido;
+            currentUser.avatar = data.user.avatar;
+            
+            
+            updateUserInterface();
+            
+            
+            if (document.getElementById('profile').classList.contains('active')) {
+                loadProfile();
+            }
+            
+            closeEditProfile();
+            showToast(data.message, 'success');
+        } else {
+            showToast(data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error al actualizar perfil', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar Cambios';
+    }
+});
+
+
+function changePassword() {
+    if (!showLoginIfNeeded()) return;
+    document.getElementById('changePasswordModal').classList.add('active');
+}
+
+
+function closeChangePassword() {
+    document.getElementById('changePasswordModal').classList.remove('active');
+    document.getElementById('changePasswordForm').reset();
+}
+
+
+document.getElementById('changePasswordForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const passwordNueva = document.getElementById('passwordNueva').value;
+    const passwordConfirmar = document.getElementById('passwordConfirmar').value;
+    
+    if (passwordNueva !== passwordConfirmar) {
+        showToast('Las contraseñas no coinciden', 'error');
+        return;
+    }
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Cambiando...';
+    
+    try {
+        const formData = new FormData(this);
+        formData.append('action', 'change_password');
+        
+        const response = await fetch('api_configuraciones.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            closeChangePassword();
+            showToast(data.message, 'success');
+        } else {
+            showToast(data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error al cambiar contraseña', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Cambiar Contraseña';
+    }
+});
+
+
+document.getElementById('editProfileModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeEditProfile();
+    }
+});
+
+document.getElementById('changePasswordModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeChangePassword();
+    }
+});
+
+
+const originalShowSection = showSection;
+showSection = function(sectionName) {
+    originalShowSection(sectionName);
+    
+    if (sectionName === 'config' && currentUser) {
+        loadUserConfig();
+    }
+};
+
+
+window.showEditProfile = showEditProfile;
+window.closeEditProfile = closeEditProfile;
+window.changePassword = changePassword;
+window.closeChangePassword = closeChangePassword;
+window.loadUserConfig = loadUserConfig;
+window.toggleSettingAndSave = toggleSettingAndSave;
+
+
+async function openCommentsModal(postId) {
+    if (!showLoginIfNeeded()) return;
+    
+
+    try {
+        const response = await fetch(`api_interacciones.php?action=check_comments_allowed&post_id=${postId}`);
+        const data = await response.json();
+        
+        if (!data.allowed) {
+            showToast('El autor ha deshabilitado los comentarios en esta publicación', 'error');
+            return;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+    
+    currentPostId = postId;
+    const modal = document.getElementById('commentsModal');
+    modal.classList.add('active');
+    
+    await loadComments(postId);
+}
+</script>
 </body>
 </html>

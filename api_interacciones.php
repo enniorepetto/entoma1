@@ -28,6 +28,10 @@ switch($action) {
         break;
     default:
         echo json_encode(['error' => 'Acción no válida']);
+    case 'check_comments_allowed':
+        checkCommentsAllowed($conexion);
+        break;
+        
 }
 
 function handleLike($conexion, $usuario_id) {
@@ -282,6 +286,46 @@ function deleteComment($conexion, $usuario_id) {
     
     $stmt->close();
 }
-
+function checkCommentsAllowed($conexion) {
+    $post_id = $_GET['post_id'] ?? 0;
+    
+    if (!$post_id) {
+        echo json_encode(['allowed' => false]);
+        return;
+    }
+    
+    // Obtener el dueño del post
+    $sql = "SELECT id_usuario FROM publicaciones WHERE id_publicaciones = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("i", $post_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    
+    if ($resultado->num_rows == 0) {
+        echo json_encode(['allowed' => false]);
+        return;
+    }
+    
+    $post = $resultado->fetch_assoc();
+    $owner_id = $post['id_usuario'];
+    
+    // Verificar configuración del dueño
+    $config_sql = "SELECT permitir_comentarios FROM configuraciones_usuario WHERE id_usuario = ?";
+    $stmt = $conexion->prepare($config_sql);
+    $stmt->bind_param("i", $owner_id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    
+    if ($resultado->num_rows == 0) {
+        // Si no tiene configuración, permitir por defecto
+        echo json_encode(['allowed' => true]);
+        return;
+    }
+    
+    $config = $resultado->fetch_assoc();
+    echo json_encode(['allowed' => (bool)$config['permitir_comentarios']]);
+    
+    $stmt->close();
+}
 $conexion->close();
 ?>
