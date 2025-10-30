@@ -558,7 +558,7 @@
             color: var(--text-secondary);
         }
 
-        /* TOAST NOTIFICATION */
+        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -595,7 +595,7 @@
             border-left-color: #e53e3e;
         }
 
-        /* SECCIONES ADICIONALES */
+        
         .profile-header {
             display: flex;
             align-items: center;
@@ -678,7 +678,7 @@
             border-bottom-color: #e91e63;
         }
 
-        /* SETTINGS */
+        
         .settings-container {
             max-width: 600px;
             margin: 0 auto;
@@ -771,7 +771,7 @@
             transform: translateY(-1px);
         }
 
-        /* CREATE FORM */
+        
         .create-form {
             max-width: 600px;
             margin: 0 auto;
@@ -867,7 +867,7 @@
             color: var(--text-secondary);
         }
 
-        /* LOGIN OVERLAY */
+        
         .login-overlay {
             position: fixed;
             top: 0;
@@ -978,7 +978,7 @@
             font-weight: 600;
         }
 
-        /* RESPONSIVE */
+        
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -1008,7 +1008,7 @@
     </style>
 </head>
 <body>
-    <!-- Modal de Comentarios -->
+    
     <div class="comments-modal" id="commentsModal">
         <div class="comments-modal-content">
             <div class="comments-header">
@@ -1025,7 +1025,7 @@
         </div>
     </div>
 
-    <!-- Login Overlay -->
+    
     <div id="loginOverlay" class="login-overlay">
         <div class="login-modal">
             <button class="close-login" onclick="closeLogin()">&times;</button>
@@ -1123,7 +1123,7 @@
         </aside>
 
         <main class="main-content">
-            <!-- FEED SECTION -->
+            
             <section id="feed" class="content-section active">
                 <div class="header">
                     <h2>Tu Feed</h2>
@@ -1137,7 +1137,7 @@
                 </div>
             </section>
 
-            <!-- EXPLORE SECTION -->
+            
             <section id="explore" class="content-section">
                 <div class="header">
                     <h2>Explorar</h2>
@@ -1148,7 +1148,7 @@
                 </div>
             </section>
             
-            <!-- CREATE SECTION -->
+            
             <section id="create" class="content-section">
                 <div class="header">
                     <h2>Crear Outfit</h2>
@@ -1219,7 +1219,7 @@
                 </div>
             </section>
 
-            <!-- NOTIFICATIONS SECTION -->
+            
             <section id="notifications" class="content-section">
                 <div class="header">
                     <h2>Notificaciones</h2>
@@ -1232,16 +1232,658 @@
                 </div>
             </section>
 
-            <!-- TRENDING SECTION -->
-            <section id="trending" class="content-section">
-                <div class="header">
-                    <h2>Tendencia</h2>
-                    <p>Los outfits más populares del momento</p>
+        
+
+<!-- Reemplaza la sección TRENDING SECTION en dashboard.php con esto -->
+
+<!-- TRENDING SECTION -->
+<section id="trending" class="content-section">
+    <div class="header">
+        <h2>Tendencia</h2>
+        <p>Los outfits más populares del momento</p>
+    </div>
+    
+    <!-- Contenedor estilo TikTok -->
+    <div class="tiktok-container" id="tiktokContainer">
+        <div class="tiktok-feed" id="tiktokFeed">
+            <div class="loading">Cargando tendencias...</div>
+        </div>
+        
+        <!-- Controles de navegación -->
+        <div class="tiktok-controls">
+            <button class="tiktok-nav-btn prev" id="prevBtn" disabled>
+                <span>↑</span>
+            </button>
+            <div class="tiktok-counter">
+                <span id="currentIndex">1</span> / <span id="totalPosts">0</span>
+            </div>
+            <button class="tiktok-nav-btn next" id="nextBtn">
+                <span>↓</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Estilos para el contenedor TikTok */
+.tiktok-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    height: calc(100vh - 200px);
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.tiktok-feed {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+.tiktok-post {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--card-bg);
+}
+
+.tiktok-post.active {
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 2;
+}
+
+.tiktok-post.prev {
+    transform: translateY(-100%);
+    opacity: 0;
+    z-index: 1;
+}
+
+.tiktok-post.next {
+    transform: translateY(100%);
+    opacity: 0;
+    z-index: 1;
+}
+
+.tiktok-image-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-secondary);
+}
+
+.tiktok-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tiktok-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    z-index: 1;
+}
+
+.tiktok-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    color: white;
+    z-index: 2;
+}
+
+.tiktok-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.tiktok-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #e91e63, #9c27b0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 12px;
+    border: 2px solid white;
+}
+
+.tiktok-username {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.tiktok-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.tiktok-description {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+.tiktok-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.tiktok-tag {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.tiktok-actions {
+    position: absolute;
+    right: 12px;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 3;
+}
+
+.tiktok-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 24px;
+    justify-content: center;
+}
+
+.tiktok-action-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.tiktok-action-btn.liked {
+    background: rgba(233, 30, 99, 0.8);
+    border-color: #e91e63;
+}
+
+.tiktok-action-btn.saved {
+    background: rgba(255, 215, 0, 0.8);
+    border-color: #ffd700;
+}
+
+.tiktok-action-count {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.tiktok-controls {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10;
+}
+
+.tiktok-nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tiktok-nav-btn:hover:not(:disabled) {
+    background: white;
+    transform: scale(1.1);
+}
+
+.tiktok-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.tiktok-counter {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.trending-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(45deg, #ff6b6b, #feca57);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Animación de like */
+@keyframes heartPop {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+.tiktok-action-btn.liked {
+    animation: heartPop 0.5s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tiktok-container {
+        max-width: 100%;
+        height: calc(100vh - 150px);
+        border-radius: 0;
+    }
+    
+    .tiktok-actions {
+        right: 8px;
+        bottom: 80px;
+    }
+    
+    .tiktok-action-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+}
+
+/* Dark mode */
+[data-theme="dark"] .tiktok-nav-btn {
+    background: rgba(45, 45, 45, 0.9);
+    color: white;
+}
+
+[data-theme="dark"] .tiktok-nav-btn:hover:not(:disabled) {
+    background: rgba(58, 58, 58, 0.9);
+}
+</style>
+
+<script>
+let trendingPosts = [];
+let currentPostIndex = 0;
+let isTransitioning = false;
+
+// Cargar posts de tendencias
+async function loadTrendingPosts() {
+    const feedContainer = document.getElementById('tiktokFeed');
+    feedContainer.innerHTML = '<div class="loading">Cargando tendencias...</div>';
+    
+    try {
+        console.log('Cargando posts de tendencias...');
+        const response = await fetch('api_posts.php?action=trending');
+        const posts = await response.json();
+        
+        console.log('Posts recibidos:', posts);
+        
+        if (posts.error) {
+            throw new Error(posts.error);
+        }
+        
+        // Si no hay posts, intentar cargar del feed normal
+        if (!posts || posts.length === 0) {
+            console.log('No hay posts en trending, cargando feed...');
+            const feedResponse = await fetch('api_posts.php?action=feed');
+            const feedPosts = await feedResponse.json();
+            
+            // Ordenar por likes y tomar los primeros 20
+            trendingPosts = feedPosts.sort((a, b) => b.likes - a.likes).slice(0, 20);
+        } else {
+            trendingPosts = posts;
+        }
+        
+        console.log('Total posts para trending:', trendingPosts.length);
+        
+        if (trendingPosts.length === 0) {
+            feedContainer.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary); flex-direction: column; gap: 16px;"><div style="font-size: 48px;">📭</div><div>No hay publicaciones disponibles</div><div style="font-size: 14px; opacity: 0.7;">¡Sé el primero en crear contenido!</div></div>';
+            return;
+        }
+        
+        renderTikTokFeed();
+        updateControls();
+        setupSwipeGestures();
+        
+    } catch (error) {
+        console.error('Error cargando trending:', error);
+        feedContainer.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary); flex-direction: column; gap: 12px;"><div style="font-size: 48px;">⚠️</div><div>Error al cargar tendencias</div><button onclick="loadTrendingPosts()" style="margin-top: 10px; padding: 8px 16px; background: #e91e63; color: white; border: none; border-radius: 8px; cursor: pointer;">Reintentar</button></div>';
+    }
+}
+
+function renderTikTokFeed() {
+    const feedContainer = document.getElementById('tiktokFeed');
+    feedContainer.innerHTML = '';
+    
+    trendingPosts.forEach((post, index) => {
+        const postElement = createTikTokPost(post, index);
+        feedContainer.appendChild(postElement);
+    });
+    
+    // Mostrar primer post
+    const firstPost = feedContainer.querySelector('.tiktok-post');
+    if (firstPost) {
+        firstPost.classList.add('active');
+    }
+}
+
+function createTikTokPost(post, index) {
+    const postDiv = document.createElement('div');
+    postDiv.className = 'tiktok-post';
+    postDiv.dataset.index = index;
+    
+    const tags = Array.isArray(post.tags) ? post.tags : 
+                 (post.tags ? String(post.tags).split(',').map(tag => tag.trim()) : []);
+    
+    const likeClass = post.liked_by_user ? 'liked' : '';
+    const saveClass = post.saved_by_user ? 'saved' : '';
+    const likeIcon = post.liked_by_user ? '❤️' : '🤍';
+    const saveIcon = post.saved_by_user ? '🔖' : '📑';
+    
+    postDiv.innerHTML = `
+        <div class="tiktok-image-container">
+            <img src="${post.image}" alt="${post.title}" class="tiktok-image" 
+                 onerror="this.src='https://via.placeholder.com/500x800/f1f3f4/767676?text=Imagen+no+disponible'">
+            <div class="tiktok-gradient"></div>
+            
+            <div class="trending-badge">
+                🔥 #${index + 1} Trending
+            </div>
+            
+            <div class="tiktok-info">
+                <div class="tiktok-user">
+                    <div class="tiktok-avatar">${post.user_avatar}</div>
+                    <span class="tiktok-username">${post.user_name}</span>
                 </div>
-                <div class="trending-grid" id="trendingGrid">
-                    <div class="loading">Cargando...</div>
+                
+                <h3 class="tiktok-title">${post.title}</h3>
+                
+                ${post.description ? `<p class="tiktok-description">${post.description}</p>` : ''}
+                
+                <div class="tiktok-tags">
+                    ${tags.map(tag => `<span class="tiktok-tag">#${tag}</span>`).join('')}
                 </div>
-            </section>
+            </div>
+        </div>
+        
+        <div class="tiktok-actions">
+            <button class="tiktok-action-btn ${likeClass}" onclick="likeTikTokPost(${post.id}, ${index}, event)">
+                <span>${likeIcon}</span>
+                <span class="tiktok-action-count">${post.likes}</span>
+            </button>
+            
+            <button class="tiktok-action-btn" onclick="openCommentsModal(${post.id})">
+                <span>💬</span>
+                <span class="tiktok-action-count">${post.comments}</span>
+            </button>
+            
+            <button class="tiktok-action-btn ${saveClass}" onclick="saveTikTokPost(${post.id}, ${index}, event)">
+                <span>${saveIcon}</span>
+            </button>
+        </div>
+    `;
+    
+    return postDiv;
+}
+
+function navigatePost(direction) {
+    if (isTransitioning || trendingPosts.length === 0) return;
+    
+    const newIndex = currentPostIndex + direction;
+    
+    if (newIndex < 0 || newIndex >= trendingPosts.length) return;
+    
+    isTransitioning = true;
+    
+    const posts = document.querySelectorAll('.tiktok-post');
+    const currentPost = posts[currentPostIndex];
+    const nextPost = posts[newIndex];
+    
+    // Animación de salida
+    currentPost.classList.remove('active');
+    if (direction > 0) {
+        currentPost.classList.add('prev');
+    } else {
+        currentPost.classList.add('next');
+    }
+    
+    // Animación de entrada
+    nextPost.classList.add('active');
+    nextPost.classList.remove('prev', 'next');
+    
+    currentPostIndex = newIndex;
+    updateControls();
+    
+    setTimeout(() => {
+        isTransitioning = false;
+    }, 500);
+}
+
+function updateControls() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentIndexEl = document.getElementById('currentIndex');
+    const totalPostsEl = document.getElementById('totalPosts');
+    
+    if (prevBtn) prevBtn.disabled = currentPostIndex === 0;
+    if (nextBtn) nextBtn.disabled = currentPostIndex === trendingPosts.length - 1;
+    
+    if (currentIndexEl) currentIndexEl.textContent = currentPostIndex + 1;
+    if (totalPostsEl) totalPostsEl.textContent = trendingPosts.length;
+}
+
+function setupSwipeGestures() {
+    const container = document.getElementById('tiktokContainer');
+    if (!container) return;
+    
+    let startY = 0;
+    let currentY = 0;
+    let isDragging = false;
+    
+    container.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        isDragging = true;
+    });
+    
+    container.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+    });
+    
+    container.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        
+        const diff = startY - currentY;
+        
+        // Swipe up (siguiente)
+        if (diff > 50) {
+            navigatePost(1);
+        }
+        // Swipe down (anterior)
+        else if (diff < -50) {
+            navigatePost(-1);
+        }
+        
+        isDragging = false;
+    });
+    
+    // Soporte para mouse wheel
+    container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        
+        if (e.deltaY > 0) {
+            navigatePost(1);
+        } else {
+            navigatePost(-1);
+        }
+    }, { passive: false });
+    
+    // Soporte para teclado
+    document.addEventListener('keydown', (e) => {
+        if (document.getElementById('trending').classList.contains('active')) {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                navigatePost(1);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                navigatePost(-1);
+            }
+        }
+    });
+}
+
+// Event listeners para controles
+document.getElementById('prevBtn')?.addEventListener('click', () => navigatePost(-1));
+document.getElementById('nextBtn')?.addEventListener('click', () => navigatePost(1));
+
+// Funciones de interacción
+async function likeTikTokPost(postId, index, event) {
+    if (!showLoginIfNeeded()) return;
+    
+    event.stopPropagation();
+    const button = event.currentTarget;
+    
+    try {
+        const formData = new FormData();
+        formData.append('action', 'like');
+        formData.append('post_id', postId);
+        
+        const response = await fetch('api_interacciones.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const icon = button.querySelector('span:first-child');
+            const count = button.querySelector('.tiktok-action-count');
+            
+            if (data.action === 'liked') {
+                button.classList.add('liked');
+                icon.textContent = '❤️';
+            } else {
+                button.classList.remove('liked');
+                icon.textContent = '🤍';
+            }
+            
+            count.textContent = data.total_likes;
+            trendingPosts[index].likes = data.total_likes;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function saveTikTokPost(postId, index, event) {
+    if (!showLoginIfNeeded()) return;
+    
+    event.stopPropagation();
+    const button = event.currentTarget;
+    
+    try {
+        const formData = new FormData();
+        formData.append('action', 'save');
+        formData.append('post_id', postId);
+        
+        const response = await fetch('api_interacciones.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const icon = button.querySelector('span:first-child');
+            
+            if (data.action === 'saved') {
+                button.classList.add('saved');
+                icon.textContent = '🔖';
+            } else {
+                button.classList.remove('saved');
+                icon.textContent = '📑';
+            }
+            
+            showToast(data.message, 'success');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Actualizar la función showSection original para cargar trending
+const originalShowSection2 = showSection;
+showSection = function(sectionName) {
+    originalShowSection2(sectionName);
+    
+    if (sectionName === 'trending') {
+        loadTrendingPosts();
+    }
+};
+
+// Exponer funciones globalmente
+window.navigatePost = navigatePost;
+window.likeTikTokPost = likeTikTokPost;
+window.saveTikTokPost = saveTikTokPost;
+</script>
 
             <!-- PROFILE SECTION -->
             <section id="profile" class="content-section">
